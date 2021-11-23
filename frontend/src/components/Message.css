@@ -1,0 +1,28 @@
+.alert {
+  position: relative;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+}
+
+.fade {
+  transition: opacity 0.15s linear;
+}
+
+.alert-danger {
+  color: #712b29;
+  background-color: #f7dddc;
+  border-color: #f4cfce;
+}
+
+.alert-info {
+  color: #10516c;
+  background-color: #d2ebf5;
+  border-color: #c0e3f2;
+}
+
+.alert-success {
+  color: #27633c;
+  background-color: #dbf2e3;
+  border-color: #cdedd8;
+}

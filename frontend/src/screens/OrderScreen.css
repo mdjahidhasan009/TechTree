@@ -1,0 +1,25 @@
+.order {
+  display: grid;
+  grid-template-columns: 0.8fr 0.4fr;
+}
+
+.order p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.order a {
+  color: #1a1a1a;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+.order h2 {
+  font-size: 2.4rem;
+  padding: 0.5rem 0;
+}
+
+.order .order__orderDetails,
+.order .order__orderSummary {
+  padding: 0 1rem;
+}

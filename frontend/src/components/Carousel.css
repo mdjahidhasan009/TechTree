@@ -1,0 +1,20 @@
+.glide__slide img{
+  width: 100%;
+  height: calc(100vh - 20rem);
+}
+
+.glide__slide{
+  filter: blur(6px);
+  opacity: .7;
+  transition: .3s linear;
+}
+
+.glide__slide--active{
+  opacity: 1;
+  filter: none;
+  transform: scale(1.1);
+}
+
+.glide__slides{
+  overflow: visible;
+}
