@@ -28,6 +28,22 @@ const productSchema = mongoose.Schema(
       type: String,
       required: true
     },
+    productStock: [
+      {
+        inStock: {
+          type: Number,
+          required: true
+        },
+        imageURL: {
+          type: String,
+          required: true
+        },
+        color: {
+          type: String,
+          required: true
+        }
+      }
+    ],
     brand: {
       type: String,
       required: true
@@ -55,7 +71,8 @@ const productSchema = mongoose.Schema(
       type: Number,
       required: true,
       default: 0
-    },
+    }
+    ,
     countInStock: {
       type: Number,
       required: true,

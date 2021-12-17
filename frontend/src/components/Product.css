@@ -21,9 +21,11 @@
 }
 
 .product .img-container img {
-  object-fit: cover;
-  height: 100%;
-  width: 100%;
+  object-fit: contain;
+  height: 40vh;
+  width: 30vw;
+  display: block;
+  margin: 0 auto;
 }
 
 .product .bottom {
@@ -97,4 +99,18 @@
 
 .product:hover .side-icons {
   transform: translate(0%, -50%);
+}
+
+@media only screen and (max-width: 1031px ) {
+  .product .img-container img {
+    height: 50vh;
+    width: 40vw;
+  }
+}
+
+@media only screen and (max-width: 671px ) {
+  .product .img-container img {
+    height: 60vh !important;
+    width: 80vw !important;
+  }
 }

@@ -1,0 +1,14 @@
+.additionalImage p {
+  margin-top: 5px;
+}
+.additionalImage__thumbnail {
+  height: 7rem;
+  width: 7rem;
+  margin: 0 auto;
+}
+
+.additionalImage__thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

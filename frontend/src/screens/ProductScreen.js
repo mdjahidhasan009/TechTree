@@ -12,9 +12,13 @@ import { PRODUCT_CREATE_REVIEW_RESET } from "../constants/productConstants";
 import './ProductScreen.css';
 
 const ProductScreen = ({ history, match }) => {
-  const [ qty, setQty ] = useState(1);
   const [ rating, setRating ] = useState(0);
   const [ comment, setComment ] = useState('');
+
+  //##
+  const [ image, setImage ] = useState('');
+  const [ quantity, setQuantity ] = useState(1);
+  //##
 
   const dispatch = useDispatch();
 
@@ -28,6 +32,10 @@ const ProductScreen = ({ history, match }) => {
   const { error: errorProductReview, success: successProductReview } = productReviewCreate;
 
   useEffect(() => {
+    setImage(product.image);
+  }, [product]);
+
+  useEffect(() => {
     if(successProductReview) {
       alert('Review Submitted');
       setRating(0);
@@ -38,7 +46,7 @@ const ProductScreen = ({ history, match }) => {
   }, [dispatch, match, successProductReview]);
 
   const addToCartHandler = () => {
-    history.push(`/cart/${match.params.id}?qty=${qty}`);
+    history.push(`/cart/${match.params.id}?qty=${quantity}`);
   }
 
   const submitHandler = (e) => {
@@ -46,6 +54,27 @@ const ProductScreen = ({ history, match }) => {
     console.log(rating, comment)
     dispatch(createProductReview(match.params.id, { rating, comment }));
   }
+
+  //##
+  const changeMainImage = () => {
+    const id = 5;
+    if(id === 5) {
+      setImage("/images/Apple/iPhone/iPhone_13/(PRODUCT)RED.png");
+    }
+  }
+
+  const changeQuantity = (e) => {
+    if(e.target.value === "" || parseInt(e.target.value) < 1) setQuantity(1);
+    else setQuantity(parseInt(e.target.value));
+    console.log(quantity);
+  }
+
+  const increaseOrDecreaseQuantity = (value) => {
+    if(value < 1) setQuantity(1);
+    else setQuantity(value);
+  }
+
+  //##
 
   return (
     <>
@@ -57,35 +86,66 @@ const ProductScreen = ({ history, match }) => {
         <>
           <Meta title={product.name} />
           {/*Product Details */}
-          <section className="section product-details">
-            <div className="details container">
-              <div className="left">
-                <div className="main">
-                  <img src={product.image} alt="" />
+          <section className="section section--productDetails">
+            <div className="container product-detail__container">
+              <div className="product-details__left">
+                <div className="details__container--left">
+                  {product?.productStock?.length > 0 && (
+                    <>
+                      <div className="product_images--thumbnails">
+                        {product?.productStock.map((item, index) => (
+                          <div className="images-container__thumbnails">
+                            <img className={(image === item.imageURL ? 'selected' : "")} id="img1"
+                              src={item.imageURL} onClick={(e) => setImage(item.imageURL)} />
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  )}
+
+                  <div className="product__image">
+                    <img src={image} alt="" className="image" id="imgMain"/>
+                  </div>
                 </div>
               </div>
 
-              <div className="right">
-                <h1>{product.name}</h1>
-                <div className="price">${product.price}</div>
-                <Rating value={product.rating} text={`  ${product.numReviews} reviews`} />
-                <form action="">
-                  <div>
-                    <select onChange={(event => setQty(event.target.value))}>
-                      <option value="Select Quantity" selected disabled>Select Quantity</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                    </select>
-                    <span><i className="fas fa-chevron-down" /></span>
+              <div className="product-details__right">
+                <div className="details__container--right">
+                  <h1>{product.name}</h1>
+                  <div className="price">${product.price}</div>
+                  <Rating value={product.rating} text={`  ${product.numReviews} reviews`} />
+                  <div className="quantity">
+                    <span>
+                      <button className="quantity__minus"
+                              onClick={() => increaseOrDecreaseQuantity(quantity - 1)}>-</button>
+                    </span>
+
+                    <input type="text" className="quantity__input" value={quantity}
+                           onChange={(e) => changeQuantity(e)}/>
+                    <span>
+                      <button className="quantity__plus"
+                              onClick={() => increaseOrDecreaseQuantity(quantity + 1)}>+</button>
+                    </span>
+
                   </div>
-                </form>
-                <button className="addCart" onClick={addToCartHandler}>Add To Cart</button>
+                  {/*<form action="">*/}
+                  {/*  <div>*/}
+                  {/*    <select onChange={(event => setQty(event.target.value))}>*/}
+                  {/*      <option value="Select Quantity" selected disabled>Select Quantity</option>*/}
+                  {/*      <option value="1">1</option>*/}
+                  {/*      <option value="2">2</option>*/}
+                  {/*      <option value="3">3</option>*/}
+                  {/*      <option value="4">4</option>*/}
+                  {/*    </select>*/}
+                  {/*    <span><i className="fas fa-chevron-down" /></span>*/}
+                  {/*  </div>*/}
+                  {/*</form>*/}
+                  <button className="addCart" onClick={addToCartHandler}>Add To Cart</button>
 
 
-                <h3>Product Detail</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur fuga id maiores nesciunt nisi odit, quis quisquam ratione recusandae voluptatem?</p>
+                  <h3>Product Detail</h3>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur fuga id maiores nesciunt nisi odit, quis quisquam ratione recusandae voluptatem?</p>
+                </div>
               </div>
             </div>
 

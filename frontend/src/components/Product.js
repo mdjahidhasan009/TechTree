@@ -9,7 +9,9 @@ const Product = ({ product }) => {
       <div className="product">
 
         <div className="img-container">
-          <Link to={`/product/${product._id}`}><img src={product.image} alt="" /></Link>
+          <Link to={`/product/${product._id}`}>
+            <img src={product.image} alt="" />
+          </Link>
           <div className="addCart">
             <i className="fas fa-shopping-cart" />
           </div>

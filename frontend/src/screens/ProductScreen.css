@@ -1,64 +1,82 @@
 /*  Product Details  */
-.product-details {
+.section--productDetails {
   margin-top: 5rem;
 }
 
-.product-details .details {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: 7rem;
+.section--productDetails img {
+  max-width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.product-details .left {
+.product__image img {
+  display: block;
+  margin: auto;
+  max-height: 39rem;
+  max-width: 100%;
+}
+
+.product-detail__container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.details__container--left {
   display: flex;
-  flex-direction: column;
+  align-items: flex-start;
 }
 
-.product-details .left .main {
-  text-align: center;
-  background-color: #f6f2f1;
-  margin-bottom: 2rem;
-  /*height: 45rem;*/
-  /*padding: 3rem;*/
+.images-container__thumbnails {
+  border-right-color: transparent;
+  cursor: pointer;
+  width: 7rem;
+  height: 7rem;
+  transition: 0.3s;
 }
 
-.product-details .left .main img {
-  object-fit: contain;
-  height: 100%;
+.selected {
+  border: 1px solid #cecdcd;
+}
+
+.product__image {
   width: 100%;
 }
 
-.product-details .thumbnails {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
-  width: 100%;
-}
-
-.product-details .thumbnail {
-  height: 10rem;
-  background-color: #f6f2f1;
-  text-align: center;
-}
-
-.product-details .thumbnail img {
-  height: 100%;
-  object-fit: contain;
-}
-
-.product-details .right span {
+.details__container--right span {
   display: inline-block;
   font-size: 1.5rem;
   margin-bottom: 1rem;
 }
 
-.product-details .right h1 {
-  font-size: 4rem;
+.details__container--right h1 {
   line-height: 1.2;
   margin-bottom: 2rem;
 }
 
-.product-details .right .price {
+.quantity {
+  display: block !important;
+  margin-bottom: 1rem;
+}
+
+.quantity__input {
+  height: 4rem;
+  width: 2.5rem;
+}
+
+.quantity input {
+  padding-left: 5px;
+}
+
+.quantity__plus, .quantity__minus {
+  padding: 1rem;
+}
+
+.quantity__input, .quantity__plus, .quantity__minus {
+  border: 1px solid #cecdcd;
+}
+
+.details__container--right .price {
   font-weight: 600;
   font-size: 2rem;
   color: var(--primary);
@@ -66,13 +84,13 @@
   display: block;
 }
 
-.product-details .right div {
+.details__container--right div {
   display: inline-block;
   position: relative;
   z-index: 1;
 }
 
-.product-details .right select {
+.details__container--right select {
   font-family: "Popping", sans-serif;
   width: 20rem;
   padding: 0.7rem;
@@ -81,11 +99,11 @@
   outline: none;
 }
 
-.product-details form {
+.section--productDetails form {
   margin-bottom: 2rem;
 }
 
-.product-details form span {
+.section--productDetails form span {
   position: absolute;
   top: 50%;
   right: 1rem;
@@ -94,18 +112,18 @@
   z-index: 0;
 }
 
-.product-details .form {
+.section--productDetails .form {
   margin-bottom: 3rem;
 }
 
-.product-details .form input {
+.section--productDetails .form input {
   padding: 0.8rem;
   text-align: center;
   width: 3.5rem;
   margin-right: 2rem;
 }
 
-.product-details .addCart {
+.section--productDetails .addCart {
   background-color: var(--primary);
   padding: 0.8rem 4rem;
   color: var(--white);
@@ -114,44 +132,38 @@
   margin-bottom: 1rem;
 }
 
-.product-details h3 {
+.section--productDetails h3 {
   text-transform: uppercase;
   margin-bottom: 2rem;
 }
 
 @media only screen and (max-width: 996px) {
-  .product-details .left {
-    /*height: 45rem;*/
+  .section--productDetails .product-detail__container {
+    gap: 1rem;
   }
+}
 
-  .product-details .details {
-    gap: 3rem;
-  }
-
-  .product-details .thumbnails {
-    gap: 0.5rem;
+@media only screen and (max-width: 830px) {
+  .product-detail__container {
+    grid-template-columns: 1fr;
+    row-gap: 5rem;
   }
 }
 
 @media only screen and (max-width: 650px) {
-  .product-details .details {
+  .section--productDetails .product-detail__container {
     grid-template-columns: 1fr;
   }
 
-  .product-details .right {
-    /*margin-top: 10rem;*/
-  }
-
-  .product-details .left {
+  .section--productDetails .details__container--left {
     width: 100%;
-    /*height: 45rem;*/
   }
 
-  .product-details .details {
-    gap: 3rem;
+  .section--productDetails .product-detail__container {
+    gap: 1rem;
   }
 
-  .product-details .thumbnail {
+  .section--productDetails .thumbnail {
     width: 6rem;
     height: 6rem;
   }
@@ -159,7 +171,7 @@
 
 
 /*Mine*/
-.product-details .rating {
+.section--productDetails .rating {
   margin-bottom: 1rem;
 }
 

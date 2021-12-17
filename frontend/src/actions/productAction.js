@@ -15,12 +15,15 @@ import {
   PRODUCT_DETAILS_SUCCESS,
   PRODUCT_LIST_FAIL,
   PRODUCT_LIST_REQUEST,
-  PRODUCT_LIST_SUCCESS, PRODUCT_TOP_FAIL, PRODUCT_TOP_REQUEST, PRODUCT_TOP_SUCCESS,
+  PRODUCT_LIST_SUCCESS,
+  PRODUCT_TOP_FAIL,
+  PRODUCT_TOP_REQUEST,
+  PRODUCT_TOP_SUCCESS,
   PRODUCT_UPDATE_FAIL,
   PRODUCT_UPDATE_REQUEST,
   PRODUCT_UPDATE_SUCCESS
 } from "../constants/productConstants";
-import {MY_ORDER_LIST_FAIL, MY_ORDER_LIST_REQUEST, MY_ORDER_LIST_SUCCESS} from "../constants/orderConstants";
+import { MY_ORDER_LIST_FAIL, MY_ORDER_LIST_REQUEST, MY_ORDER_LIST_SUCCESS } from "../constants/orderConstants";
 
 export const listProducts = (keyword = '', pageNumber = '') => async (dispatch) => {
   try {
@@ -145,7 +148,9 @@ export const updateProduct = (product) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`
       }
     }
+    console.log(product)
     const { data } = await axios.put(`/api/products/${product._id}`, product ,config);
+    console.log(data)
     dispatch({
       type: PRODUCT_UPDATE_SUCCESS,
       payload: data
