@@ -59,13 +59,17 @@
   transition: all 300ms ease-in-out;
 }
 
+.addCart .fas {
+  color: #4857cc;
+}
+
 .product:hover .addCart {
   border-radius: 1rem 0 0 0;
 }
 
 .product .addCart:hover {
-  background-color: var(--primary);
-  color: var(--white);
+  /*background-color: var(--primary);*/
+  /*color: var(--white);*/
 }
 
 .product i {

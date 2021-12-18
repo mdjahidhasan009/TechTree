@@ -15,20 +15,7 @@ const ProductEditScreen = ({ match, history }) => {
   const [name, setName] = useState('');
   const [price, setPrice] = useState(0);
   const [image, setImage] = useState('');
-  const [ productStock, setProductStock ] = useState([
-    // {
-    //    _id: "61b9bff23b027548ed2f737e",
-    //    color: "red",
-    //   imageURL: "/uploads/image-1639561204805.png",
-    //   inStock: 4
-    // },
-    // {
-    //   _id: "61b9bff23b027548ed2f737e",
-    //   color: "kk",
-    //   imageURL: "/uploads/image-1639561204805.png",
-    //   inStock: 40
-    // },
-  ]);
+  const [ productStock, setProductStock ] = useState([]);
   const [brand, setBrand] = useState('');
   const [category, setCategory] = useState('');
   const [countInStock, setCountInStock] = useState(0);
@@ -44,24 +31,12 @@ const ProductEditScreen = ({ match, history }) => {
   const { loading: loadingUpdate, error: errorUpdate, success: successUpdate } = productUpdate;
 
   useEffect(() => {
-    productStock.map((item) => {
-      console.log(item.color);
-      console.log(item._id);
-    })
-    console.log(productStock)
-  }, [productStock])
-
-  useEffect(() => {
     if(successUpdate) {
       dispatch({ type: PRODUCT_UPDATE_FAIL });
       history.push('/admin/productlist');
     } else {
       if(!product.name || product._id !== productId) dispatch(listProductDetails(productId));
       else {
-        if(product && productStock) {
-          // console.log(product);
-          console.log(productStock);
-        }
         setName(product.name);
         setPrice(product.price);
         setImage(product.image);
@@ -103,7 +78,6 @@ const ProductEditScreen = ({ match, history }) => {
         }
       }
       const { data } = await axios.post('/api/upload', formData, config);
-      console.log(typeof data)
       if(index === null) setImage(data);
       else changeProductStock(e, index, data);
       setUploading(false);
@@ -122,9 +96,14 @@ const ProductEditScreen = ({ match, history }) => {
         index === i ? item.imageURL = imgURL : item;
       });
     }
-    else if(e.target.name === "color") {
+    else if(e.target.name === "colorCode") {
       tempProductStock.map((item, i) => {
-        index === i ? item.color = e.target.value : item;
+        index === i ? item.colorName = e.target.value : item;
+      });
+    }
+    else if(e.target.name === "colorName") {
+      tempProductStock.map((item, i) => {
+        index === i ? item.colorName = e.target.value : item;
       });
     }
     else if(e.target.name === "inStock") {
@@ -133,7 +112,6 @@ const ProductEditScreen = ({ match, history }) => {
       });
     }
     setProductStock(tempProductStock);
-    console.log(productStock)
   }
 
   const addNewAdditionalProduct = (e) => {
@@ -142,9 +120,9 @@ const ProductEditScreen = ({ match, history }) => {
     tempProductStock.push({
       inStock: 0,
       imageURL: "",
-      color: ""
+      colorName: "",
+      colorCode: ""
     });
-    console.log(tempProductStock);
     setProductStock(tempProductStock);
   }
 
@@ -152,7 +130,6 @@ const ProductEditScreen = ({ match, history }) => {
     e.preventDefault();
     let tempProductStock = [...productStock];
     let out = tempProductStock.filter((obj, i) => i !== index);
-    console.log(out);
     setProductStock(out);
   }
   //##
@@ -206,14 +183,11 @@ const ProductEditScreen = ({ match, history }) => {
                 className="form-control"
                 placeholder='Enter image url'
                 value={image}
-                // onChange={(e) => setImage(e.target.value)}
               />
 
               <input
                   type="file"
                   id='image-file'
-                  // label='Choose File'
-                  // custom
                   onChange={uploadFileHandler}
               />
               <button>Delete</button>
@@ -230,15 +204,29 @@ const ProductEditScreen = ({ match, history }) => {
 
                   <div className="additionalImage__description">
                     <div className="form-group">
-                      <label className="form-label" htmlFor={"color"+index}>Color</label>
+                      <label className="form-label" htmlFor={"colorName"+index}>Color Name</label>
                       <input
-                          id={"color"+index}
-                          name="color"
+                        id={"colorName"+index}
+                        name="colorName"
+                        type="text"
+                        className="form-control"
+                        placeholder="Enter Color Name"
+                        required="true"
+                        value={item.colorName}
+                        onChange={(e) => changeProductStock(e, index)}
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label className="form-label" htmlFor={"colorCode"+index}>Color Code</label>
+                      <input
+                          id={"colorCode"+index}
+                          name="colorCode"
                           type="text"
                           className="form-control"
-                          placeholder="Enter Color"
+                          placeholder="Enter Color Code"
                           required="true"
-                          value={item.color}
+                          value={item.colorCode}
                           onChange={(e) => changeProductStock(e, index)}
                       />
                     </div>
@@ -246,34 +234,33 @@ const ProductEditScreen = ({ match, history }) => {
                     <div className="form-group">
                       <label className="form-label" htmlFor="inStock">Total Unit in Stock(of this color)</label>
                       <input
-                          id="inStock"
-                          name="inStock"
-                          type="number"
-                          className="form-control"
-                          placeholder="Enter Total Unit in Stock(of this color)"
-                          required="true"
-                          value={item.inStock}
-                          onChange={(e) => changeProductStock(e, index)}
+                        id="inStock"
+                        name="inStock"
+                        type="number"
+                        className="form-control"
+                        placeholder="Enter Total Unit in Stock(of this color)"
+                        required="true"
+                        value={item.inStock}
+                        onChange={(e) => changeProductStock(e, index)}
                       />
                     </div>
 
                     <div className="form-group">
                       <div className="form-label" htmlFor={"image" + index}>Image</div>
                       <input
-                          id={"image" + index}
-                          type="text"
-                          className="form-control"
-                          placeholder={"Enter image URL of additional image no " + (index + 1)}
-                          value={item.imageURL}
-                          required="true"
-                          // onChange={(e) => changeProductStock(e, index)}
+                        id={"image" + index}
+                        type="text"
+                        className="form-control"
+                        placeholder={"Enter image URL of additional image no " + (index + 1)}
+                        value={item.imageURL}
+                        required="true"
                       />
 
                       <input
-                          type="file"
-                          id={"image-file" + (index + 1)}
-                          name="imageURL"
-                          onChange={(e) => uploadFileHandler(e, index)}
+                        type="file"
+                        id={"image-file" + (index + 1)}
+                        name="imageURL"
+                        onChange={(e) => uploadFileHandler(e, index)}
                       />
                       <button onClick={(e) => removeAdditionalProduct(e,index)}>Delete</button>
                     </div>

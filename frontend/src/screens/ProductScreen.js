@@ -33,6 +33,7 @@ const ProductScreen = ({ history, match }) => {
 
   useEffect(() => {
     setImage(product.image);
+    console.log(product);
   }, [product]);
 
   useEffect(() => {
@@ -53,14 +54,6 @@ const ProductScreen = ({ history, match }) => {
     e.preventDefault();
     console.log(rating, comment)
     dispatch(createProductReview(match.params.id, { rating, comment }));
-  }
-
-  //##
-  const changeMainImage = () => {
-    const id = 5;
-    if(id === 5) {
-      setImage("/images/Apple/iPhone/iPhone_13/(PRODUCT)RED.png");
-    }
   }
 
   const changeQuantity = (e) => {
@@ -107,6 +100,12 @@ const ProductScreen = ({ history, match }) => {
                     <img src={image} alt="" className="image" id="imgMain"/>
                   </div>
                 </div>
+
+                  <div className="button-container">
+                    <button className="addCart" onClick={addToCartHandler}>Add To Cart</button>
+                    <button className="buyNow">Buy Now</button>
+                  </div>
+
               </div>
 
               <div className="product-details__right">
@@ -128,23 +127,32 @@ const ProductScreen = ({ history, match }) => {
                     </span>
 
                   </div>
-                  {/*<form action="">*/}
-                  {/*  <div>*/}
-                  {/*    <select onChange={(event => setQty(event.target.value))}>*/}
-                  {/*      <option value="Select Quantity" selected disabled>Select Quantity</option>*/}
-                  {/*      <option value="1">1</option>*/}
-                  {/*      <option value="2">2</option>*/}
-                  {/*      <option value="3">3</option>*/}
-                  {/*      <option value="4">4</option>*/}
-                  {/*    </select>*/}
-                  {/*    <span><i className="fas fa-chevron-down" /></span>*/}
-                  {/*  </div>*/}
-                  {/*</form>*/}
-                  <button className="addCart" onClick={addToCartHandler}>Add To Cart</button>
 
+                  {/*<h3>Product Detail</h3>*/}
+                  {/*<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A, iusto officia pariatur quidem velit voluptate.</p>*/}
+                  <div className="total-price">
+                    <p>Total Price: ${product.price*quantity}</p>
+                  </div>
+                  <h4>Brand: {product.brand}</h4>
+                  <div className="color-available">
+                    {product?.productStock?.length > 0
+                      ? (
+                        <>
+                          <div className="color-available__container">
+                            <h4>Color:</h4>
+                            {product?.productStock?.map((item) => (
+                                <div className="color-available--colors">
+                                  <span style={{background: item.colorCode }}></span>
+                                </div>
+                            ))}
+                          </div>
 
-                  <h3>Product Detail</h3>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur fuga id maiores nesciunt nisi odit, quis quisquam ratione recusandae voluptatem?</p>
+                        </>
+                      )
+                      :
+                      ""
+                    }
+                  </div>
                 </div>
               </div>
             </div>
