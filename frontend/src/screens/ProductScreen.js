@@ -16,7 +16,7 @@ const ProductScreen = ({ history, match }) => {
   const [ comment, setComment ] = useState('');
 
   //##
-  const [ image, setImage ] = useState('');
+  const [ mainImg, setMainImg ] = useState({});
   const [ quantity, setQuantity ] = useState(1);
   //##
 
@@ -32,7 +32,7 @@ const ProductScreen = ({ history, match }) => {
   const { error: errorProductReview, success: successProductReview } = productReviewCreate;
 
   useEffect(() => {
-    setImage(product.image);
+    setMainImg({url: product.image, colorCode: null, colorName: null});
     console.log(product);
   }, [product]);
 
@@ -83,21 +83,22 @@ const ProductScreen = ({ history, match }) => {
             <div className="container product-detail__container">
               <div className="product-details__left">
                 <div className="details__container--left">
+                  {/*Product Image Thumbnails*/}
                   {product?.productStock?.length > 0 && (
                     <>
                       <div className="product_images--thumbnails">
                         {product?.productStock.map((item, index) => (
                           <div className="images-container__thumbnails">
-                            <img className={(image === item.imageURL ? 'selected' : "")} id="img1"
-                              src={item.imageURL} onClick={(e) => setImage(item.imageURL)} />
+                            <img className={(mainImg.url === item.imageURL ? 'selected' : "")} id="img1"
+                              src={item.imageURL} onClick={(e) => setMainImg({url: item.imageURL, colorCode: item.colorCode, colorName: item.colorName})} />
                           </div>
                         ))}
                       </div>
                     </>
                   )}
-
+                  {/*Product Image*/}
                   <div className="product__image">
-                    <img src={image} alt="" className="image" id="imgMain"/>
+                    <img src={mainImg.url} alt="" className="image" id="imgMain"/>
                   </div>
                 </div>
 
@@ -108,6 +109,7 @@ const ProductScreen = ({ history, match }) => {
 
               </div>
 
+              {/* Product Details */}
               <div className="product-details__right">
                 <div className="details__container--right">
                   <h1>{product.name}</h1>
@@ -139,10 +141,11 @@ const ProductScreen = ({ history, match }) => {
                       ? (
                         <>
                           <div className="color-available__container">
-                            <h4>Color:</h4>
+                            <h4>Color: {mainImg.colorCode === null ? "Select One" : mainImg.colorName}</h4>
                             {product?.productStock?.map((item) => (
-                                <div className="color-available--colors">
-                                  <span style={{background: item.colorCode }}></span>
+                                <div
+                                    className={"color-available--colors " + (mainImg.colorCode === item.colorCode ? 'selected' : "")}>
+                                  <span style={{ background: item.colorCode }}></span>
                                 </div>
                             ))}
                           </div>
