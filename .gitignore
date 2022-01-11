@@ -1,7 +1,12 @@
 /frontend/node_modules
 /frontend/build
+/frontend/.firebase
+/frontend/firebase.json
+/frontend/.env.production
+/frontend/.firebaserc
 
 /backend/node_modules
 /backend/.env
+/backend/.git
 
 .idea

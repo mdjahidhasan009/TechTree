@@ -10,7 +10,7 @@ const Product = ({ product }) => {
 
         <div className="img-container">
           <Link to={`/product/${product._id}`}>
-            <img src={product.image} alt="" />
+            <img src={`${process.env.REACT_APP_BACKEND_BASE_URL}${product.image}`} alt="" />
           </Link>
           <div className="addCart">
             <i className="fas fa-shopping-cart" />

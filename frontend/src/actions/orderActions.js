@@ -35,7 +35,7 @@ export const createOrder = (order) => async (dispatch, getState) => {
       }
     }
 
-    const { data } = await axios.post(`/api/orders`, order, config);
+    const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/orders`, order, config);
     dispatch({
       type: ORDER_CREATE_SUCCESS,
       payload: data
@@ -66,7 +66,7 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`
       }
     }
-    const { data } = await axios.get(`/api/orders/${id}`, config);
+    const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/orders/${id}`, config);
     dispatch({
       type: ORDER_DETAILS_SUCCESS,
       payload: data
@@ -97,7 +97,7 @@ export const payOrder = (orderId, paymentResult) => async (dispatch, getState) =
         Authorization: `Bearer ${userInfo.token}`
       }
     }
-    const { data } = await axios.put(`/api/orders/${orderId}/pay`, paymentResult, config)
+    const { data } = await axios.put(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/orders/${orderId}/pay`, paymentResult, config)
     dispatch({
       type: ORDER_PAY_SUCCESS,
       payload: data
@@ -127,7 +127,7 @@ export const deliverOrder = (order) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`
       }
     }
-    const { data } = await axios.put(`/api/orders/${order._id}/deliver`, {}, config)
+    const { data } = await axios.put(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/orders/${order._id}/deliver`, {}, config)
     dispatch({
       type: ORDER_DELIVER_SUCCESS,
       payload: data
@@ -157,7 +157,7 @@ export const getMyOrderList = () => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`
       }
     }
-    const { data } = await axios.get(`/api/orders/myorders`, config)
+    const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/orders/myorders`, config)
     dispatch({
       type: MY_ORDER_LIST_SUCCESS,
       payload: data
@@ -187,7 +187,7 @@ export const getOrderList = () => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`
       }
     }
-    const { data } = await axios.get(`/api/orders`, config)
+    const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/orders`, config)
     dispatch({
       type: ORDER_LIST_SUCCESS,
       payload: data

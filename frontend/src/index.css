@@ -19,6 +19,7 @@
 html {
   box-sizing: border-box;
   font-size: 62.5%;
+  min-width: 100%;
 }
 
 body {
@@ -27,6 +28,12 @@ body {
   background-color: var(--white);
   color: var(--black);
   font-weight: 400;
+  min-width: 100%;
+}
+
+/* For forcing footer for go to bottom of screen when there are not enough element to push it at bottom */
+#contents-container {
+  min-height: calc(100vh - 65px - 80px) !important; /*65=>navbar*/
 }
 
 h1, h2, h3, h4 {

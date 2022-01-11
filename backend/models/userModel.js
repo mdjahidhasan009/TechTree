@@ -32,10 +32,10 @@ userSchema.methods.matchPassword = async function(enteredPassword) {
 
 userSchema.pre('save', async function (next) {
   if(!this.isModified('password')) {
-    //when password does not modified at profile update last two line will ignored.
+    //when the password does not modify at profile update last two lines will be ignored.
     next();
   }
-  //this two line will executed at user creation and update user if password get changed.
+  //this two line will be executed at user creation and update user if password get changed.
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 })

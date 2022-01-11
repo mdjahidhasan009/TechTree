@@ -11,7 +11,7 @@ import {
 import { isAdmin, protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
-
+// /api/orders
 router.route('/')
     .post(protect, addOrderItems)
     .get(protect, isAdmin, getOrders);

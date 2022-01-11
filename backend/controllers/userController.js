@@ -54,7 +54,6 @@ const registerUser = expressAsyncHandler(async (req, res) => {
 // @route   GET api/users/profile
 // @access  Private
 const getUserProfile = expressAsyncHandler(async (req, res) => {
-  console.log('lol')
   const user = await User.findById(req.user._id).select('-password');
   if(user) {
     res.json({
