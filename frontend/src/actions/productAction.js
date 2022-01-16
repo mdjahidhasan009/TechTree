@@ -34,8 +34,6 @@ export const listProducts = (keyword = '', pageNumber = '') => async (dispatch) 
       type: PRODUCT_LIST_SUCCESS,
       payload: data
     });
-    console.log(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/products?keyword=${keyword}&pageNumber=${pageNumber}`);
-    console.log(data);
   } catch (error) {
     dispatch({
       type: PRODUCT_LIST_FAIL,
@@ -64,7 +62,7 @@ export const listTopProducts = () => async (dispatch) => {
   }
 }
 
-export const listProductDetails = (id) => async (dispatch) => {
+export const getProductDetails = (id) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_DETAILS_REQUEST });
     const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/products/${id}`);
@@ -108,7 +106,7 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
   }
 }
 
-export const createProduct = () => async (dispatch, getState) => {
+export const createProduct = (product) => async (dispatch, getState) => {
   try {
     dispatch({
       type: PRODUCT_CREATE_REQUEST
@@ -121,7 +119,8 @@ export const createProduct = () => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`
       }
     }
-    const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/products`, {} ,config);//as it is an post request so sending empty object
+    //as it is an post request so sending empty object
+    const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/products`,product ,config);
     dispatch({
       type: PRODUCT_CREATE_SUCCESS,
       payload: data
@@ -151,9 +150,9 @@ export const updateProduct = (product) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`
       }
     }
-    console.log(product)
-    const { data } = await axios.put(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/products/${product._id}`, product ,config);
-    console.log(data)
+
+    const { data } = await axios.put(
+        `${process.env.REACT_APP_BACKEND_BASE_URL}/api/products/${product._id}`, product ,config);
     dispatch({
       type: PRODUCT_UPDATE_SUCCESS,
       payload: data

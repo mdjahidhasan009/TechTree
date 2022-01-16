@@ -69,7 +69,8 @@ const PlaceOrderScreen = ({ history }) => {
                     <div className="list-group-item" key={index}>
                       <div className="row">
                         <div className="col-md-1">
-                          <img className="img-fluid rounded" src={item.image} alt={item.name} />
+                          <img className="img-fluid rounded"
+                             src={`${process.env.REACT_APP_BACKEND_BASE_URL}${item.image}`} alt={item.name} />
                         </div>
                         <div className="col">
                           <Link to={`/product/${item.product}`}>{item.name}</Link>

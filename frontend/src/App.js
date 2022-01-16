@@ -15,7 +15,7 @@ import OrderListScreen from "./screens/OrderListScreen";
 import UserListScreen from "./screens/UserListScreen";
 import UserEditScreen from "./screens/UserEditScreen";
 import ProductListScreen from "./screens/ProductListScreen";
-import ProductEditScreen from "./screens/ProductEditScreen";
+import ProductEditOrAddScreen from "./screens/ProductEditOrAddScreen";
 import Header from './components/Header';
 import Footer from './components/Footer';
 
@@ -41,7 +41,10 @@ const App = () => {
             <Route path='/admin/user/:id/edit' component={UserEditScreen} />
             <Route path='/admin/productlist' component={ProductListScreen} exact/>
             <Route path='/admin/productlist/:pageNumber' component={ProductListScreen} exact/>
-            <Route path='/admin/product/:id/edit' component={ProductEditScreen} />
+            <Route exact path='/admin/product/:id/edit'
+                   render={({...props}) => <ProductEditOrAddScreen mode="edit-product" {...props} />} />
+            <Route exact path='/admin/product/add'
+                   render={({...props}) => <ProductEditOrAddScreen mode="add-product" {...props} />} />
             <Route path='/admin/orderlist' component={OrderListScreen} />
             <Route path='/search/:keyword' component={HomeScreen} exact />
             <Route path='/search/:keyword/page/:pageNumber' component={HomeScreen} exact />

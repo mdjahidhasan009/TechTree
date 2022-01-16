@@ -8,7 +8,7 @@ import Loader from "../components/Loader";
 import { getOrderDetails, payOrder, deliverOrder } from '../actions/orderActions';
 import { ORDER_PAY_RESET, ORDER_DELIVER_RESET } from "../constants/orderConstants";
 
-import './OrderScreen.css';
+import './stylesheets/OrderScreen.css';
 
 const OrderScreen = ({ match, history }) => {
   const [ sdkReady, setSdkReady ] = useState(false);
@@ -60,7 +60,6 @@ const OrderScreen = ({ match, history }) => {
   }, [dispatch, orderId, successPay, order, successDeliver]);
 
   const successPaymentHandler = (paymentResult) => {
-    console.log(paymentResult);
     dispatch(payOrder(orderId, paymentResult));
   }
 
@@ -119,7 +118,8 @@ const OrderScreen = ({ match, history }) => {
                               <div className="list-group-item" key={index}>
                                 <div className="row">
                                   <div className="col-md-1">
-                                    <img className="img-fluid rounded" src={item.image} alt={item.name}  />
+                                    <img className="img-fluid rounded"
+                                       src={`${process.env.REACT_APP_BACKEND_BASE_URL}${item.image}`} alt={item.name}/>
                                   </div>
                                   <div className="col">
                                     <a href={`/product/${item.product}`}>{item.name}</a>

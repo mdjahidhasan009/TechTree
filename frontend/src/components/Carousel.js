@@ -40,9 +40,9 @@ const Carousel = () => {
         </div>
 
         <div className="glide__arrows" data-glide-el="controls">
-          <button className="glide__arrow glide__arrow--left" data-glide-dir="<"><i className="fas fa-arrow-left"></i>
+          <button className="glide__arrow glide__arrow--left" data-glide-dir="<"><i className="fas fa-arrow-left" />
           </button>
-          <button className="glide__arrow glide__arrow--right" data-glide-dir=">"><i className="fas fa-arrow-right"></i>
+          <button className="glide__arrow glide__arrow--right" data-glide-dir=">"><i className="fas fa-arrow-right" />
           </button>
         </div>
       </div>

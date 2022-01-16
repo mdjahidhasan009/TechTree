@@ -3,14 +3,19 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import axios from 'axios';
 
-import { listProductDetails, updateProduct } from '../actions/productAction';
+import {createProduct, getProductDetails, updateProduct} from '../actions/productAction';
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
-import { PRODUCT_UPDATE_FAIL } from "../constants/productConstants";
-import './ProductEditScreen.css';
+import {
+  PRODUCT_CREATE_RESET,
+  PRODUCT_CREATE_SUCCESS,
+  PRODUCT_UPDATE_FAIL,
+  PRODUCT_UPDATE_RESET
+} from "../constants/productConstants";
+import './stylesheets/ProductEditOrAddScreen.css';
 
-const ProductEditScreen = ({ match, history }) => {
+const ProductEditOrAddScreen = ({ match, history, mode }) => {
   const productId = match.params.id;
   const [name, setName] = useState('');
   const [price, setPrice] = useState(0);
@@ -21,6 +26,8 @@ const ProductEditScreen = ({ match, history }) => {
   const [countInStock, setCountInStock] = useState(0);
   const [description, setDescription] = useState('');
   const [uploading, setUploading] = useState(false);
+  const [ pageTitle, setPageTitle ] = useState("Add New Product");
+  const [ submitBtnName, setSubmitBtnName ] = useState("Add Product");
 
   const dispatch = useDispatch();
 
@@ -30,40 +37,58 @@ const ProductEditScreen = ({ match, history }) => {
   const productUpdate = useSelector(state => state.productUpdate);
   const { loading: loadingUpdate, error: errorUpdate, success: successUpdate } = productUpdate;
 
+  const productCreate = useSelector(state => state.productCreate);
+  const { loading: loadingCreate, error: errorCreate, success: successCreate, product: createdProduct } = productCreate;
+
   useEffect(() => {
-    if(successUpdate) {
-      dispatch({ type: PRODUCT_UPDATE_FAIL });
-      history.push('/admin/productlist');
+    if(mode === 'edit-product') {
+      setPageTitle("Edit Product");
+      setSubmitBtnName("Edit Product");
+      if(successUpdate) {
+        dispatch({ type: PRODUCT_UPDATE_RESET });
+        history.push('/admin/productlist');
+      } else {
+        if(!product.name || product._id !== productId) dispatch(getProductDetails(productId));
+        else {
+          setName(product.name);
+          setPrice(product.price);
+          setImage(product.image);
+          setBrand(product.brand);
+          setCategory(product.category);
+          setCountInStock(product.countInStock);
+          setDescription(product.description);
+          setProductStock(product.productStock);
+        }
+      }
     } else {
-      if(!product.name || product._id !== productId) dispatch(listProductDetails(productId));
-      else {
-        setName(product.name);
-        setPrice(product.price);
-        setImage(product.image);
-        setBrand(product.brand);
-        setCategory(product.category);
-        setCountInStock(product.countInStock);
-        setDescription(product.description);
-        setProductStock(product.productStock);
+      if(successCreate) {
+        dispatch({ type: PRODUCT_CREATE_SUCCESS, payload: createdProduct });
+        dispatch({ type: PRODUCT_CREATE_RESET });
+        history.push(`/admin/productlist`);
       }
     }
-  }, [dispatch, history, product, productId, successUpdate])
+
+  }, [dispatch, history, product, productId, successUpdate, successCreate])
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log(image)
-    dispatch(updateProduct({
-      _id: productId,
-      name,
-      price,
-      image,
-      brand,
-      category,
-      description,
-      countInStock,
-      productStock
-      })
-    )
+    if(mode === "edit-product") {
+      dispatch(updateProduct({
+        _id: productId,
+        name,           price,
+        image,          brand,
+        category,       description,
+        countInStock,   productStock
+        })
+      )
+    } else {
+      dispatch(createProduct({
+        name,           price,
+        image,          brand,
+        category,       description,
+        countInStock,   productStock
+      }))
+    }
   }
 
   const uploadFileHandler = async (e, index = null) => {
@@ -77,7 +102,7 @@ const ProductEditScreen = ({ match, history }) => {
           'Content-Type': 'multipart/form-data'
         }
       }
-      const { data } = await axios.post('/api/upload', formData, config);
+      const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/upload`, formData, config);
       if(index === null) setImage(data);
       else changeProductStock(e, index, data);
       setUploading(false);
@@ -87,9 +112,7 @@ const ProductEditScreen = ({ match, history }) => {
     }
   }
 
-  //##
   const changeProductStock = async (e, index, imgURL = null) => {
-    //worked
     const tempProductStock = [...productStock];
     if(imgURL !== null) {
       tempProductStock.map((item, i) => {
@@ -132,7 +155,6 @@ const ProductEditScreen = ({ match, history }) => {
     let out = tempProductStock.filter((obj, i) => i !== index);
     setProductStock(out);
   }
-  //##
 
   return (
     <>
@@ -140,7 +162,7 @@ const ProductEditScreen = ({ match, history }) => {
         Go Back
       </Link>
       <FormContainer>
-        <h1>Edit Product</h1>
+        <h1>{pageTitle}</h1>
         {/* Product updating(after click update button) */}
         {loadingUpdate && <Loader />}
         {errorUpdate && <Message variant='danger'>{errorUpdate}</Message>}
@@ -155,6 +177,7 @@ const ProductEditScreen = ({ match, history }) => {
               <label className="form-label" htmlFor="name">Name</label>
               <input
                 id="name"
+                required="true"
                 type="text"
                 className="form-control"
                 placeholder="Enter name"
@@ -167,6 +190,7 @@ const ProductEditScreen = ({ match, history }) => {
               <label className="form-label" htmlFor="price">Price</label>
               <input
                 id="price"
+                required="true"
                 type="number"
                 className="form-control"
                 placeholder="Enter Price"
@@ -179,6 +203,7 @@ const ProductEditScreen = ({ match, history }) => {
               <label className="form-label" htmlFor="image">Image</label>
               <input
                 id="image"
+                required="true"
                 type='text'
                 className="form-control"
                 placeholder='Enter image url'
@@ -194,12 +219,13 @@ const ProductEditScreen = ({ match, history }) => {
               {uploading && <Loader />}
             </div>
 
+            {/* Additional Images */}
             {productStock.map((item, index) => (
               <>
                 <p>Additional Image No {index + 1}</p>
                 <div className="additionalImage" key={item._id}>
                   <div className="additionalImage__thumbnail">
-                    <img src={item.imageURL} alt=""/>
+                    <img src={`${process.env.REACT_APP_BACKEND_BASE_URL}${item.imageURL}`} alt=""/>
                   </div>
 
                   <div className="additionalImage__description">
@@ -258,6 +284,7 @@ const ProductEditScreen = ({ match, history }) => {
 
                       <input
                         type="file"
+                        required="true"
                         id={"image-file" + (index + 1)}
                         name="imageURL"
                         onChange={(e) => uploadFileHandler(e, index)}
@@ -266,13 +293,8 @@ const ProductEditScreen = ({ match, history }) => {
                     </div>
                   </div>
 
-
                 </div>
-
               </>
-
-
-
             ))}
 
             {productStock.length < 5 ? (
@@ -286,6 +308,7 @@ const ProductEditScreen = ({ match, history }) => {
               <label className="form-label" htmlFor="brand">Brand</label>
               <input
                 id="brand"
+                required="true"
                 type='text'
                 className="form-control"
                 placeholder='Enter brand'
@@ -298,6 +321,7 @@ const ProductEditScreen = ({ match, history }) => {
               <label className="form-label" htmlFor="countInStock">Count In Stock</label>
               <input
                 id="countInStock"
+                required="true"
                 type='number'
                 className="form-control"
                 placeholder='Enter countInStock'
@@ -310,6 +334,7 @@ const ProductEditScreen = ({ match, history }) => {
               <label className="form-label" htmlFor="category">Category</label>
               <input
                 id="category"
+                required="true"
                 type='text'
                 className="form-control"
                 placeholder='Enter category'
@@ -322,6 +347,7 @@ const ProductEditScreen = ({ match, history }) => {
               <label className="form-label" htmlFor="description">Description</label>
               <input
                 id="description"
+                required="true"
                 type='text'
                 className="form-control"
                 placeholder='Enter description'
@@ -329,7 +355,9 @@ const ProductEditScreen = ({ match, history }) => {
                 onChange={(e) => setDescription(e.target.value)}
               />
             </div>
-            <button className="btn btn-default">Update</button>
+
+
+            <button className="btn btn-default">{submitBtnName}</button>
           </form>
           )
         }
@@ -338,4 +366,4 @@ const ProductEditScreen = ({ match, history }) => {
   )
 }
 
-export default ProductEditScreen;
+export default ProductEditOrAddScreen;

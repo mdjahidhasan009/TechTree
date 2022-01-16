@@ -12,7 +12,7 @@ const HomeScreen = ({ match }) => {
   const dispatch = useDispatch();
 
   const keyword = match.params.keyword;
-  const pageNumber = match.params.pageNumber || 1;
+  const pageNumber = match.params.pageNumber;
 
   const productList = useSelector(state => state.productList);
   const { loading, error, products, page, totalPages } = productList;
@@ -24,7 +24,7 @@ const HomeScreen = ({ match }) => {
   return (
       <>
         <Meta />
-        {!keyword
+        {!keyword && !(pageNumber)
             ? <Carousel />
             : (
                 <Link to='/' className='btn btn-light'>Go Back</Link>

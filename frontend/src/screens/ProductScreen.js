@@ -3,22 +3,19 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import Rating from "../components/Rating";
-import { listProductDetails, createProductReview } from "../actions/productAction";
+import { getProductDetails, createProductReview } from "../actions/productAction";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import Meta from "../components/Meta";
 import { PRODUCT_CREATE_REVIEW_RESET } from "../constants/productConstants";
 
-import './ProductScreen.css';
+import './stylesheets/ProductScreen.css';
 
 const ProductScreen = ({ history, match }) => {
   const [ rating, setRating ] = useState(0);
   const [ comment, setComment ] = useState('');
-
-  //##
   const [ mainImg, setMainImg ] = useState({});
   const [ quantity, setQuantity ] = useState(1);
-  //##
 
   const dispatch = useDispatch();
 
@@ -33,7 +30,6 @@ const ProductScreen = ({ history, match }) => {
 
   useEffect(() => {
     setMainImg({url: product.image, colorCode: null, colorName: null});
-    console.log(product);
   }, [product]);
 
   useEffect(() => {
@@ -43,7 +39,7 @@ const ProductScreen = ({ history, match }) => {
       setComment('');
       dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
     }
-    dispatch(listProductDetails(match.params.id));
+    dispatch(getProductDetails(match.params.id));
   }, [dispatch, match, successProductReview]);
 
   const addToCartHandler = () => {
@@ -52,22 +48,18 @@ const ProductScreen = ({ history, match }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log(rating, comment)
     dispatch(createProductReview(match.params.id, { rating, comment }));
   }
 
   const changeQuantity = (e) => {
     if(e.target.value === "" || parseInt(e.target.value) < 1) setQuantity(1);
     else setQuantity(parseInt(e.target.value));
-    console.log(quantity);
   }
 
   const increaseOrDecreaseQuantity = (value) => {
     if(value < 1) setQuantity(1);
     else setQuantity(value);
   }
-
-  //##
 
   return (
     <>
@@ -89,8 +81,11 @@ const ProductScreen = ({ history, match }) => {
                       <div className="product_images--thumbnails">
                         {product?.productStock.map((item, index) => (
                           <div className="images-container__thumbnails">
-                            <img className={(mainImg.url === item.imageURL ? 'selected' : "")} id="img1"
-                              src={item.imageURL} onClick={(e) => setMainImg({url: item.imageURL, colorCode: item.colorCode, colorName: item.colorName})} />
+                            <img className={(mainImg.url === item.imageURL ? 'selected' : "")}
+                              id="img1"
+                              src={`${process.env.REACT_APP_BACKEND_BASE_URL}${item.imageURL}`}
+                              onClick={(e) => setMainImg(
+                                  {url: item.imageURL, colorCode: item.colorCode, colorName: item.colorName})} />
                           </div>
                         ))}
                       </div>
@@ -98,7 +93,7 @@ const ProductScreen = ({ history, match }) => {
                   )}
                   {/*Product Image*/}
                   <div className="product__image">
-                    <img src={mainImg.url} alt="" className="image" id="imgMain"/>
+                    <img src={`${process.env.REACT_APP_BACKEND_BASE_URL}${mainImg.url}`} alt="" className="image" id="imgMain"/>
                   </div>
                 </div>
 
@@ -131,7 +126,6 @@ const ProductScreen = ({ history, match }) => {
                   </div>
 
                   {/*<h3>Product Detail</h3>*/}
-                  {/*<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A, iusto officia pariatur quidem velit voluptate.</p>*/}
                   <div className="total-price">
                     <p>Total Price: ${product.price*quantity}</p>
                   </div>
@@ -145,7 +139,7 @@ const ProductScreen = ({ history, match }) => {
                             {product?.productStock?.map((item) => (
                                 <div
                                     className={"color-available--colors " + (mainImg.colorCode === item.colorCode ? 'selected' : "")}>
-                                  <span style={{ background: item.colorCode }}></span>
+                                  <span style={{ background: item.colorCode }} />
                                 </div>
                             ))}
                           </div>

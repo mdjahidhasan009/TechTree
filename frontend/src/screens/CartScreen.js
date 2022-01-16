@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart, removeFromCart } from "../actions/cartActions";
 import Message from "../components/Message";
 
-import './CartScreen.css';
+import './stylesheets/CartScreen.css';
 
 const CartScreen = ({ match, location, history }) => {
   const productId = match.params.id;
@@ -17,7 +17,6 @@ const CartScreen = ({ match, location, history }) => {
   useEffect(() => {
     if(productId) {
       dispatch(addToCart(productId, qty));
-      console.log(productId, qty)
     }
   }, [dispatch, productId, qty]);
 
@@ -49,7 +48,7 @@ const CartScreen = ({ match, location, history }) => {
             {cartItems.map(item => (
               <tr key={item._id}>
                 <td>
-                    <img src={item.image} alt="" />
+                    <img src={`${process.env.REACT_APP_BACKEND_BASE_URL}${item.image}`} alt="" />
                 </td>
                 <td><p>{item.name}</p></td>
                 <td><span>Price: ${item.price.toFixed(2)}</span></td>
@@ -74,7 +73,7 @@ const CartScreen = ({ match, location, history }) => {
                 <td>${cartItems.reduce((total, item) => total + item.qty * item.price, 0).toFixed(2)}</td>
               </tr>
             </table>
-            <a href="" className="checkout btn">Proceed To Checkout</a>
+            <a href="" onClick={checkoutHandler} className="checkout btn">Proceed To Checkout</a>
           </div>
         </>
       )}
