@@ -16,6 +16,7 @@ const ProductScreen = ({ history, match }) => {
   const [ comment, setComment ] = useState('');
   const [ mainImg, setMainImg ] = useState({});
   const [ quantity, setQuantity ] = useState(1);
+  const [ selectedNavTab, setSelectedNavTab ] = useState("Details");
 
   const dispatch = useDispatch();
 
@@ -135,7 +136,7 @@ const ProductScreen = ({ history, match }) => {
                       ? (
                         <>
                           <div className="color-available__container">
-                            <h4>Color: {mainImg.colorCode === null ? "Select One" : mainImg.colorName}</h4>
+                            <h4>Color: {mainImg.colorCode === null ? "Select From Thumbnail" : mainImg.colorName}</h4>
                             {product?.productStock?.map((item) => (
                                 <div
                                     className={"color-available--colors " + (mainImg.colorCode === item.colorCode ? 'selected' : "")}>
@@ -154,54 +155,84 @@ const ProductScreen = ({ history, match }) => {
               </div>
             </div>
 
-            {/*Review of product */}
-            <div className="container product-review">
-              <h2>Reviews</h2>
-              {product.reviews.length === 0 && <Message>No Reviews</Message>}
-              {product.reviews.map((review) => (
-                <div className="preview-list" key={product._id}>
-                  <strong>{review.name}</strong>
-                  <Rating value={review.rating}  text=''/>
-                  <p>{review.createdAt.substring(0,10)}</p>
-                  <p>{review.comment}</p>
-                  <hr/>
-                </div>
-              ))}
-              <div className="preview-create">
-                {userInfo ? (
-                    <>
-                      <h2>Write a Customer Review</h2>
-                      {errorProductReview && (
-                          <Message variant='danger'>{errorProductReview}</Message>
-                      )}
-                      <form action="">
-                        <div className="form-group">
-                          <label className="form-label" htmlFor="rating">Rating</label>
-                          <select id="rating" className="form-control" type="select" value={rating}
-                                  onChange={(e) => setRating(e.target.value)}
-                          >
-                            <option value=''>Select...</option>
-                            <option value='1'>1 - Poor</option>
-                            <option value='2'>2 - Fair</option>
-                            <option value='3'>3 - Good</option>
-                            <option value='4'>4 - Very Good</option>
-                            <option value='5'>5 - Excellent</option>
-                          </select>
-                        </div>
-                        <div className="form-group">
-                          <label className="form-label" htmlFor="comment">Comment</label>
-                          <textarea className="form-control" id="comment" value={comment}
-                                    onChange={(e) => setComment(e.target.value)}
-                          />
-                        </div>
-                        <button onClick={submitHandler} type="submit" className="btn btn-default">Submit</button>
-                      </form>
-                    </>
-                ): (
-                  <Message>Please <Link to="/login">sign in</Link> to write a review</Message>
-                  )}
-              </div>
+            <div className="tab-nav">
+              <p className={selectedNavTab === "Details" ? "tab-nav__selected" : ""}
+                 onClick={(e)=>setSelectedNavTab("Details")}>Details
+              </p>
+              <p  className={selectedNavTab === "Reviews" ? "tab-nav__selected" : ""}
+                  onClick={(e)=>setSelectedNavTab("Reviews")}>Reviews</p>
             </div>
+
+
+            <div className="tab-nav-container">
+              {/* Product Details*/}
+              {selectedNavTab === "Details" && (
+                //if rendering finished before fetching product details
+                product.description?.map((groupItem, groupIndex) => (
+                  <div className="spec-group">
+                    <h5>{groupItem.groupName}</h5>
+                    {groupItem.specifications.map((specItem, specIndex) => (
+                      <div className="spec-item">
+                        <h5>{specItem.specName}</h5>
+                        <h5>{specItem.specValue}</h5>
+                      </div>
+                    ))}
+                  </div>
+                )))
+              }
+              {/* Reviews */}
+              {selectedNavTab === "Reviews" && (
+                <div className="container product-review">
+                  {/*<h2>Reviews</h2>*/}
+                  {product.reviews.length === 0 && <Message>No Reviews</Message>}
+                  {product.reviews.map((review) => (
+                      <div className="preview-list" key={product._id}>
+                        <strong>{review.name}</strong>
+                        <Rating value={review.rating}  text=''/>
+                        <p>{review.createdAt.substring(0,10)}</p>
+                        <p>{review.comment}</p>
+                        <hr/>
+                      </div>
+                  ))}
+                  <div className="preview-create">
+                    {userInfo ? (
+                        <>
+                          <h2>Write a Customer Review</h2>
+                          {errorProductReview && (
+                              <Message variant='danger'>{errorProductReview}</Message>
+                          )}
+                          <form action="">
+                            <div className="form-group">
+                              <label className="form-label" htmlFor="rating">Rating</label>
+                              <select id="rating" className="form-control" type="select" value={rating}
+                                      onChange={(e) => setRating(e.target.value)}
+                              >
+                                <option value=''>Select...</option>
+                                <option value='1'>1 - Poor</option>
+                                <option value='2'>2 - Fair</option>
+                                <option value='3'>3 - Good</option>
+                                <option value='4'>4 - Very Good</option>
+                                <option value='5'>5 - Excellent</option>
+                              </select>
+                            </div>
+                            <div className="form-group">
+                              <label className="form-label" htmlFor="comment">Comment</label>
+                              <textarea className="form-control" id="comment" value={comment}
+                                        onChange={(e) => setComment(e.target.value)}
+                              />
+                            </div>
+                            <button onClick={submitHandler} type="submit" className="btn btn-default">Submit</button>
+                          </form>
+                        </>
+                    ): (
+                        <Message>Please <Link to="/login">sign in</Link> to write a review</Message>
+                    )}
+                  </div>
+                </div>
+                )
+              }
+            </div>
+
           </section>
         </>
       )

@@ -53,7 +53,8 @@ const CartScreen = ({ match, location, history }) => {
                 <td><p>{item.name}</p></td>
                 <td><span>Price: ${item.price.toFixed(2)}</span></td>
                 <td>
-                  <input type="number" min="1" value={item.qty} onChange={(e) =>
+                  <input type="number" min="1" value={item.qty}
+                         onChange={(e) =>
                       dispatch(addToCart(item.product, Number(e.target.value)))} />
                 </td>
                 <td>${(item.price * item.qty).toFixed(2)}</td>

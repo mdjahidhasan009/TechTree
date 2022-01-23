@@ -22,30 +22,31 @@ const HomeScreen = ({ match }) => {
   }, [dispatch, keyword, pageNumber]);
 
   return (
-      <>
-        <Meta />
-        {!keyword && !(pageNumber)
-            ? <Carousel />
-            : (
-                <Link to='/' className='btn btn-light'>Go Back</Link>
-            )
-        }
-        {/*Products */}
-        {/*<Carousel />*/}
-        <section className="section products">
+    <>
+      <Meta />
+      {!keyword && !(pageNumber)
+        ? <Carousel />
+        : (
+            <Link style={{ marginBottom: 15, display: "inline-block" }} to='/' className='btn btn-light'>Go Back</Link>
+        )
+      }
+      {/*Products */}
+      <section className="section products">
+        {!keyword && !pageNumber && (
           <div className="title">
-            <h2>New Products</h2>
+            <h2>All Products</h2>
             <span><small>Select from the premium product and save plenty money.</small></span>
           </div>
+        )}
 
-          <div className="product-layout">
-            {products.map(product => (
-                <Product product={product} key={product._id}/>
-            ))}
-          </div>
-        </section>
-        <Paginate totalPages={totalPages} page={page} keyword={keyword ? keyword : ''} />
-      </>
+        <div className="product-layout">
+          {products.map(product => (
+              <Product product={product} key={product._id}/>
+          ))}
+        </div>
+      </section>
+      <Paginate totalPages={totalPages} page={page} keyword={keyword ? keyword : ''} />
+    </>
   )
 }
 

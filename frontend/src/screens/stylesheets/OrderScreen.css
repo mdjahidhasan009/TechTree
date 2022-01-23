@@ -3,6 +3,12 @@
   grid-template-columns: 0.8fr 0.4fr;
 }
 
+@media only screen and (max-width: 767px) {
+  .order {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
 .order p {
   margin-top: 0;
   margin-bottom: 1rem;
@@ -23,3 +29,4 @@
 .order .order__orderSummary {
   padding: 0 1rem;
 }
+

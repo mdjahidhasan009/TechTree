@@ -56,10 +56,24 @@ const productSchema = mongoose.Schema(
       type: String,
       required: true
     },
-    description: {
-      type: String,
-      required: true
-    },
+    description: [
+      {
+        groupName: {
+          type: String,
+          required: true
+        },
+        specifications: [
+          {
+            specName: {
+              type: String
+            },
+            specValue: {
+              type: String
+            }
+          }
+        ]
+      }
+    ],
     reviews: [reviewSchema],
     rating: {
       type: Number,

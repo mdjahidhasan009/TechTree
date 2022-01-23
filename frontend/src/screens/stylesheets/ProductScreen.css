@@ -10,10 +10,11 @@
 }
 
 .product-details__left {
-  width: 60vw;
+  max-width: 60vw;
 }
 
 .product-details__right {
+  text-align: center;
   width: 35vw;
 }
 
@@ -77,10 +78,10 @@
 }
 
 .color-available--colors {
+  text-align: initial; /*for centering the color in the center of the circle*/
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  /*border: 1px solid #828282 !important;*/
   margin-right: 5px;
 }
 
@@ -125,6 +126,65 @@
   outline: none;
 }
 
+.tab-nav-container {
+  border: 1px solid #e1e1e1;
+  padding: 0 20px 20px 20px;
+}
+
+.tab-nav {
+  margin-top: 10px;
+}
+
+.tab-nav p {
+  display: inline-block;
+  padding: 1rem;
+  border: 1px solid #e1e1e1;
+}
+
+.tab-nav__selected{
+  border: none;
+  color: white;
+  background-color: var(--primary);
+}
+
+.spec-group > h5 {
+  margin-top: 30px;
+  margin-bottom: 5px;
+}
+
+.spec-group > h5:first-child {
+  /*margin-top: 0;*/
+}
+
+.spec-item {
+  margin-left: 30px;
+  border-bottom: 1px solid #e1e1e1;
+}
+
+.spec-item h5 {
+  display: inline-block;
+  font-weight: 100;
+  padding: 5px 0;
+}
+
+.spec-item h5:first-child {
+  width: 17.66666667%;
+}
+
+.spec-item h5:last-child {
+  width: 82.33333333%;
+}
+
+@media only screen and (max-width: 767px) {
+  .spec-item h5:first-child {
+    width: 100%;
+  }
+
+  .spec-item h5:last-child {
+    width: 100%;
+  }
+}
+
 .section--productDetails form {
   margin-bottom: 2rem;
 }
@@ -157,6 +217,7 @@
 }
 
 .addCart, .buyNow{
+  text-space: nowrap;
   background-color: var(--primary);
   padding: 0.8rem 4rem;
   color: var(--white);
@@ -164,6 +225,12 @@
   border: none;
   margin: 10px;
   display: inline-block;
+}
+
+@media only screen and (max-width: 364px) {
+  .addCart, .buyNow{
+    padding: 0.4rem 2rem;
+  }
 }
 
 .section--productDetails h3 {
@@ -179,12 +246,11 @@
 
 @media only screen and (max-width: 950px) {
   .product-details__left {
-    width: 100%;
+    max-width: 100%;
   }
 
   .product-details__right {
     width: 100%;
-    text-align: center;
   }
 
   .product-detail__container {
@@ -194,6 +260,10 @@
 
   .color-available span {
     left: 0;
+  }
+
+  .color-available--colors {
+    text-align: center;
   }
 }
 

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../actions/userActions";
 import SearchBox from './SearchBox';
 
-import './Header.css';
+import './stylesheets/Header.css';
 
 const Header = () => {
   const dispatch = useDispatch();

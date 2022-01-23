@@ -9,6 +9,7 @@ import { getOrderDetails, payOrder, deliverOrder } from '../actions/orderActions
 import { ORDER_PAY_RESET, ORDER_DELIVER_RESET } from "../constants/orderConstants";
 
 import './stylesheets/OrderScreen.css';
+import {addToCart} from "../actions/cartActions";
 
 const OrderScreen = ({ match, history }) => {
   const [ sdkReady, setSdkReady ] = useState(false);
@@ -37,7 +38,7 @@ const OrderScreen = ({ match, history }) => {
   useEffect(() => {
     if(!userInfo) history.push('/login');
     const addPayPalScript = async () => {
-      const { data: clientId } = await axios.get('/api/config/paypal');
+      const { data: clientId } = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/config/paypal`);
       const script = document.createElement('script');
       script.type = 'text/javascript';
       script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
@@ -54,7 +55,7 @@ const OrderScreen = ({ match, history }) => {
       dispatch(getOrderDetails(orderId));
     }
     else if(!order.isPaid) {
-      if(!window.paypal) addPayPalScript()
+      if(!window.paypal) addPayPalScript();
       else setSdkReady(true);
     }
   }, [dispatch, orderId, successPay, order, successDeliver]);
@@ -75,8 +76,8 @@ const OrderScreen = ({ match, history }) => {
           <h1>Order {order._id}</h1>
             <div className="order">
               <div className="order__orderDetails">
-                <div className="list-group list-group-flush">
-                  <div className="list-group-item">
+                <div className="list-group">
+                  <div className="list-item">
                     <h2>Shipping</h2>
                     <p>
                       <strong>Name: </strong> {order.user.name}</p>
@@ -95,7 +96,7 @@ const OrderScreen = ({ match, history }) => {
                     )}
                   </div>
 
-                  <div className="list-group-item">
+                  <div className="list-item">
                       <h2>Payment Method</h2>
                       <p>
                       <strong>Method: </strong>
@@ -108,30 +109,32 @@ const OrderScreen = ({ match, history }) => {
                     )}
                   </div>
 
-                  <div className="list-group-item">
+                  <div className="list-item">
                     <h2>Order Items</h2>
                     {order.orderItems.length === 0 ? (
                         <Message>Your order is empty</Message>
                     ) : (
-                        <div className="list-group list-group-flush">
-                          {order.orderItems.map((item, index) => (
-                              <div className="list-group-item" key={index}>
-                                <div className="row">
-                                  <div className="col-md-1">
-                                    <img className="img-fluid rounded"
-                                       src={`${process.env.REACT_APP_BACKEND_BASE_URL}${item.image}`} alt={item.name}/>
-                                  </div>
-                                  <div className="col">
-                                    <a href={`/product/${item.product}`}>{item.name}</a>
-                                  </div>
-                                  <div className="col-md-4">
-                                    {item.qty} x ${item.price} =
-                                    ${Number(item.qty * item.price).toFixed(2)}
-                                  </div>
-                                </div>
-                              </div>
-                          ))}
-                        </div>
+                      <table>
+                        <tr>
+                          <th>Product</th>
+                          <th>Name</th>
+                          <th>Total</th>
+                        </tr>
+
+                        {order.orderItems.map(item => (
+                            <tr key={item._id}>
+                              <td>
+                                <img src={`${process.env.REACT_APP_BACKEND_BASE_URL}${item.image}`} alt="" />
+                              </td>
+                              <td><p>{item.name}</p></td>
+                              <td>
+                                <span>{item.qty} x ${item.price} =
+                                  ${Number(item.qty * item.price).toFixed(2)}
+                                </span>
+                              </td>
+                            </tr>
+                        ))}
+                      </table>
                     )}
                   </div>
                 </div>
@@ -140,33 +143,33 @@ const OrderScreen = ({ match, history }) => {
               <div className="order__orderSummary">
                 <div className="card">
                   <div className="list-group list-group-flush">
-                    <div className="list-group-item"><h2>Order Summary</h2></div>
-                    <div className="list-group-item">
+                    <div className="list-item"><h2>Order Summary</h2></div>
+                    <div className="list-item">
                       <div className="row">
                         <div className="col">Items</div>
                         <div className="col">${order.itemsPrice}</div>
                       </div>
                     </div>
-                    <div className="list-group-item">
+                    <div className="list-item">
                       <div className="row">
                         <div className="col">Shipping</div>
                         <div className="col">${order.shippingPrice}</div>
                       </div>
                     </div>
-                    <div className="list-group-item">
+                    <div className="list-item">
                       <div className="row">
                         <div className="col">Tax</div>
                         <div className="col">${order.taxPrice}</div>
                       </div>
                     </div>
-                    <div className="list-group-item">
+                    <div className="list-item">
                       <div className="row">
                         <div className="col">Total</div>
                         <div className="col">${order.totalPrice}</div>
                       </div>
                     </div>
                     {!order.isPaid && (
-                      <div className="list-group-item">
+                      <div className="list-item">
                         {loadingPay && <Loader />}
                         {!sdkReady ? (
                           <Loader />
@@ -181,7 +184,7 @@ const OrderScreen = ({ match, history }) => {
 
                     {loadingDeliver && <Loader />}
                     {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
-                      <div className="list-group-item">
+                      <div className="list-item">
                         {/*  Mark as Delivered*/}
                         {/*</Button>*/}
                         <button className="btn btn-primary" onClick={deliverHandler}>

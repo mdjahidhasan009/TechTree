@@ -119,6 +119,7 @@ export const createProduct = (product) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`
       }
     }
+    console.log(product)
     //as it is an post request so sending empty object
     const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/products`,product ,config);
     dispatch({

@@ -34,11 +34,8 @@
   max-width: 35rem;
 }
 
-td:last-child {
-  text-align: right;
-}
-
-th:last-child {
+td:last-child,
+th:last-child{
   text-align: right;
 }
 

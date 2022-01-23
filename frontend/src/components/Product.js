@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import './Product.css';
+import './stylesheets/Product.css';
 
 const Product = ({ product }) => {
   return (
@@ -13,12 +13,8 @@ const Product = ({ product }) => {
             <img src={`${process.env.REACT_APP_BACKEND_BASE_URL}${product.image}`} alt="" />
           </Link>
           <div className="addCart">
-            <i className="fas fa-shopping-cart" />
+            <Link to={`/cart/${product._id}?qty=1`}><i className="fas fa-shopping-cart" /></Link>
           </div>
-
-          <ul className="side-icons">
-            <span><i className="far fa-heart" /></span>
-          </ul>
         </div>
 
         <div className="bottom">

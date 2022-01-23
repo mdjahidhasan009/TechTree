@@ -7,7 +7,7 @@ import Loader from "./Loader";
 import Message from './Message';
 import { listTopProducts } from "../actions/productAction"
 
-import './ProductCarousel.css';
+import './stylesheets/ProductCarousel.css';
 
 const ProductCarousel = () => {
   const dispatch = useDispatch();

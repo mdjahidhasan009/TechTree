@@ -1,6 +1,6 @@
 import React from "react";
 
-import './Message.css';
+import './stylesheets/Message.css';
 
 const Message = ({ variant, children }) => {
   return <div role={variant} className={`fade alert alert-${variant} show`}>

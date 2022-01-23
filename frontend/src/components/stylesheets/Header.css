@@ -122,6 +122,7 @@ nav .wrapper {
 
 .nav-list input[type="text"] {
   margin-left: 5px;
+  padding: 5px;
 }
 .nav-list input[type="checkbox"] {
   display: none;

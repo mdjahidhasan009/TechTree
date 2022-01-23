@@ -12,3 +12,33 @@
   height: 100%;
   object-fit: cover;
 }
+
+.specification-group {
+  display: flex;
+  margin-top: 30px;
+}
+
+.specification-group-container {
+  width: 100%;
+}
+
+.specification  {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.specification .form-group {
+  width: 48%;
+  display: inline-block;
+}
+
+.specification-group .fas,
+.specification .fas {
+  margin: 41px 0 41px 4px;
+  color: red;
+}
+
+.specification .fas:hover {
+  cursor: pointer;
+}

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import axios from 'axios';
 
-import {createProduct, getProductDetails, updateProduct} from '../actions/productAction';
+import { createProduct, getProductDetails, updateProduct } from '../actions/productAction';
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
@@ -17,15 +17,15 @@ import './stylesheets/ProductEditOrAddScreen.css';
 
 const ProductEditOrAddScreen = ({ match, history, mode }) => {
   const productId = match.params.id;
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState(0);
-  const [image, setImage] = useState('');
+  const [ name, setName ] = useState('');
+  const [ price, setPrice ] = useState(0);
+  const [ image, setImage ] = useState('');
   const [ productStock, setProductStock ] = useState([]);
-  const [brand, setBrand] = useState('');
-  const [category, setCategory] = useState('');
-  const [countInStock, setCountInStock] = useState(0);
-  const [description, setDescription] = useState('');
-  const [uploading, setUploading] = useState(false);
+  const [ brand, setBrand ] = useState('');
+  const [ category, setCategory ] = useState('');
+  const [ countInStock, setCountInStock ] = useState(0);
+  const [ description, setDescription ] = useState([]);
+  const [ uploading, setUploading ] = useState(false);
   const [ pageTitle, setPageTitle ] = useState("Add New Product");
   const [ submitBtnName, setSubmitBtnName ] = useState("Add Product");
 
@@ -121,7 +121,7 @@ const ProductEditOrAddScreen = ({ match, history, mode }) => {
     }
     else if(e.target.name === "colorCode") {
       tempProductStock.map((item, i) => {
-        index === i ? item.colorName = e.target.value : item;
+        index === i ? item.colorCode = e.target.value : item;
       });
     }
     else if(e.target.name === "colorName") {
@@ -152,8 +152,64 @@ const ProductEditOrAddScreen = ({ match, history, mode }) => {
   const removeAdditionalProduct = (e, index) => {
     e.preventDefault();
     let tempProductStock = [...productStock];
-    let out = tempProductStock.filter((obj, i) => i !== index);
-    setProductStock(out);
+    let updatedProductStock = tempProductStock.filter((obj, i) => i !== index);
+    setProductStock(updatedProductStock);
+  }
+
+  const addNewSpecificationGroup = (e) => {
+    e.preventDefault();
+    const tempDescription = [...description];
+    console.log(tempDescription)
+    tempDescription.push({
+      groupName: "",
+      specifications: [
+        {
+          specName: "",
+          specValue: ""
+        }
+      ]
+    });
+    setDescription(tempDescription);
+  }
+
+  const addNewSpecification = (e, index) => {
+    e.preventDefault();
+    let tempDescription = [...description];
+    tempDescription[index]
+      .specifications.push({
+        specName: "",
+        specValue: ""
+      });
+    setDescription(tempDescription);
+  }
+
+  const changeSpec = (e, specGroupIndex, specIndex = 0) => {
+    e.preventDefault();
+    const tempDescription = [...description];
+    if(e.target.name === "specification-group-name") {
+      tempDescription[specGroupIndex].groupName = e.target.value;
+    } else if(e.target.name === "specification-name"){
+      tempDescription[specGroupIndex].specifications[specIndex].specName = e.target.value;
+      console.log(tempDescription[specGroupIndex].specifications[specIndex].specName);
+    } else if(e.target.name === "specification-value") {
+      tempDescription[specGroupIndex].specifications[specIndex].specValue = e.target.value;
+    }
+
+    setDescription(tempDescription);
+  }
+
+  const removeSpec = (specGroupIndex, specIndex = -1) => {
+    let tempDescription = [...description];
+    let updatedDescription;
+    if(specIndex !== -1) {
+      updatedDescription = tempDescription[specGroupIndex]
+          .specifications.filter((obj, index) => index !== specIndex);
+      tempDescription[specGroupIndex].specifications = updatedDescription;
+      setDescription(tempDescription);
+    } else {
+      updatedDescription = tempDescription.filter((obj, index) => index !== specGroupIndex);
+      setDescription(updatedDescription);
+    }
   }
 
   return (
@@ -215,7 +271,7 @@ const ProductEditOrAddScreen = ({ match, history, mode }) => {
                   id='image-file'
                   onChange={uploadFileHandler}
               />
-              <button>Delete</button>
+              <button className="btn btn-default">Delete</button>
               {uploading && <Loader />}
             </div>
 
@@ -284,12 +340,13 @@ const ProductEditOrAddScreen = ({ match, history, mode }) => {
 
                       <input
                         type="file"
-                        required="true"
                         id={"image-file" + (index + 1)}
                         name="imageURL"
                         onChange={(e) => uploadFileHandler(e, index)}
                       />
-                      <button onClick={(e) => removeAdditionalProduct(e,index)}>Delete</button>
+                      <button className="btn btn-default"
+                        onClick={(e) => removeAdditionalProduct(e,index)}>Delete
+                      </button>
                     </div>
                   </div>
 
@@ -297,9 +354,12 @@ const ProductEditOrAddScreen = ({ match, history, mode }) => {
               </>
             ))}
 
-            {productStock.length < 5 ? (
-                <button onClick={(e) => addNewAdditionalProduct(e)}>Add New Additional Image</button>
-            )
+            {productStock.length < 5 ?
+              (
+                <button className="btn btn-default" onClick={(e) =>
+                    addNewAdditionalProduct(e)}>Add New Additional Image
+                </button>
+              )
               :
               ""
             }
@@ -345,18 +405,76 @@ const ProductEditOrAddScreen = ({ match, history, mode }) => {
 
             <div className="form-group">
               <label className="form-label" htmlFor="description">Description</label>
-              <input
-                id="description"
-                required="true"
-                type='text'
-                className="form-control"
-                placeholder='Enter description'
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
+              {/*<input*/}
+              {/*  id="description"*/}
+              {/*  required="true"*/}
+              {/*  type='text'*/}
+              {/*  className="form-control"*/}
+              {/*  placeholder='Enter description'*/}
+              {/*  value={description}*/}
+              {/*  onChange={(e) => setDescription(e.target.value)}*/}
+              {/*/>*/}
             </div>
 
+            <button className="btn btn-default" onClick={addNewSpecificationGroup}>Add New Specification Group</button>
 
+            {description.map((specGroupItem, specGroupIndex) => (
+              <>
+                <div className="form-group specification-group">
+                  <div className="specification-group-container">
+                    <label className="form-label" htmlFor="specification-group-name">Specification Group Name</label>
+                    <input
+                        id="specification-group-name"
+                        name="specification-group-name"
+                        required="true"
+                        type="text"
+                        className="form-control"
+                        placeholder="Specification Group Name"
+                        value={specGroupItem.groupName}
+                        onChange={(e) => changeSpec(e, specGroupIndex)}
+                    />
+                  </div>
+                  <i onClick={() => removeSpec(specGroupIndex)} className="fas fa-times" />
+                </div>
+
+                <button className="btn btn-default" onClick={(e) =>
+                    addNewSpecification(e, specGroupIndex)}>Add New Specification
+                </button>
+                {specGroupItem.specifications.map((specItem, specIndex) => (
+                  <div className="specification">
+                    <div className="form-group">
+                      <label className="form-label" htmlFor="specification-name">Specification Name</label>
+                      <input
+                          id="specification-name"
+                          name="specification-name"
+                          required="true"
+                          type="text"
+                          className="form-control"
+                          placeholder="Specification Name"
+                          value={specItem.specName}
+                          onChange={(e) => changeSpec(e, specGroupIndex, specIndex)}
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label className="form-label"  htmlFor="specification-value">Specification Value</label>
+                      <input
+                          id="specification-value"
+                          name="specification-value"
+                          required="true"
+                          type="text"
+                          className="form-control"
+                          placeholder="Specification Value"
+                          value={specItem.specValue}
+                          onChange={(e) => changeSpec(e, specGroupIndex, specIndex)}
+                      />
+                    </div>
+                    <i onClick={() => removeSpec(specGroupIndex, specIndex)} className="fas fa-times" />
+                  </div>
+                ))}
+
+              </>
+            ))}
             <button className="btn btn-default">{submitBtnName}</button>
           </form>
           )

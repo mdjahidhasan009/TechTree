@@ -1,14 +1,15 @@
 import React, { useEffect } from "react";
 
-import './Carousel.css';
+import './stylesheets/Carousel.css';
 
 const Carousel = () => {
   useEffect(() => {
+    if(Glide)
       new Glide(".images",{
       type: 'carousel',
     }).mount();
 
-  }, [])
+  }, [Glide])
   return (
       <div className="images glide">
         <div className="glide__track" data-glide-el="track">
