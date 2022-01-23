@@ -9,7 +9,6 @@ import { getOrderDetails, payOrder, deliverOrder } from '../actions/orderActions
 import { ORDER_PAY_RESET, ORDER_DELIVER_RESET } from "../constants/orderConstants";
 
 import './stylesheets/OrderScreen.css';
-import {addToCart} from "../actions/cartActions";
 
 const OrderScreen = ({ match, history }) => {
   const [ sdkReady, setSdkReady ] = useState(false);

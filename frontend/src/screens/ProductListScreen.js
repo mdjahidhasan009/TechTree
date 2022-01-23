@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import Message from "../components/Message";
 import Loader from "../components/Loader";
@@ -86,11 +87,11 @@ const ProductListScreen = ({ history, match }) => {
                     <td>{product.category}</td>
                     <td>{product.brand}</td>
                     <td>
-                      <a href={`/admin/product/${product._id}/edit`}>
+                      <Link to={`/admin/product/${product._id}/edit`}>
                         <button className='btn btn-light'>
                           <i className="fas fa-edit" />
                         </button>
-                      </a>
+                      </Link>
                       <button className='btn btn-primary' onClick={() => deleteHandler(product._id)}>
                         <i className="fas fa-trash" />
                       </button>

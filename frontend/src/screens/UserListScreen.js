@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import {Link} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import Message from "../components/Message";
@@ -65,11 +66,11 @@ const UserListScreen = ({ history }) => {
                     </td>
                     <td>
 
-                      <a href={`/admin/user/${user._id}/edit`}>
+                      <Link to={`/admin/user/${user._id}/edit`}>
                         <button className='btn btn-primary btn-light'>
                           <i className="fas fa-edit" />
                         </button>
-                      </a>
+                      </Link>
                       <button className='btn btn-primary' onClick={() => deleteHandler(user._id)}>
                         <i className="fas fa-trash" />
                       </button>

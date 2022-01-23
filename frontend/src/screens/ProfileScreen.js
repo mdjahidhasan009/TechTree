@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
 import { Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from "react-redux";
 
@@ -141,9 +142,9 @@ const ProfileScreen = ({ location, history }) => {
                         }
                       </td>
                       <td>
-                        <a href={`/order/${order._id}`}>
+                        <Link to={`/order/${order._id}`}>
                           <button className='btn btn-primary btn-light'>Details</button>
-                        </a>
+                        </Link>
                       </td>
                     </tr>
                 ))}

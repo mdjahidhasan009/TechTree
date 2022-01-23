@@ -74,7 +74,7 @@ const CartScreen = ({ match, location, history }) => {
                 <td>${cartItems.reduce((total, item) => total + item.qty * item.price, 0).toFixed(2)}</td>
               </tr>
             </table>
-            <a href="" onClick={checkoutHandler} className="checkout btn">Proceed To Checkout</a>
+            <button className="checkout btn" onClick={checkoutHandler} >Proceed To Checkout</button>
           </div>
         </>
       )}

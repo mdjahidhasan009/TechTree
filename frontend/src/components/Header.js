@@ -42,7 +42,7 @@ const Header = () => {
   return (
       <nav className="nav">
         <div className="wrapper container">
-          <div className="logo"><a href="#">TechTree</a></div>
+          <div className="logo"><Link to="/">TechTree</Link></div>
           <ul className="nav-list">
             <div className="top">
               <label htmlFor="" className="nav_btn close-btn"><i className="fas fa-times" /></label>
@@ -50,9 +50,9 @@ const Header = () => {
             <li><Link to="/">Home</Link></li>
             {userInfo ? (
               <li>
-                <a href="" className="desktop-item">
+                <Link to="" className="desktop-item">
                   {userInfo.name} <span><i className="fas fa-chevron-down" /></span>
-                </a>
+                </Link>
                 <input type="checkbox" id="showdrop1" />
                 <label htmlFor="showdrop1" className="mobile-item">
                   <span>{userInfo.name} <i className="fas fa-chevron-down" /></span>

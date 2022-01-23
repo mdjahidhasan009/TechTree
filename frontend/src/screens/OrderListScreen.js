@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import Message from "../components/Message";
 import Loader from "../components/Loader";
@@ -66,9 +67,9 @@ const OrderListScreen = ({ history }) => {
               </td>
               <td>
                 {/*</LinkContainer>*/}
-                <a href={`/order/${order._id}`}>
+                <Link to={`/order/${order._id}`}>
                   <button className='btn btn-primary btn-light'>Details</button>
-                </a>
+                </Link>
               </td>
             </tr>
           ))}
