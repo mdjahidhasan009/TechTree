@@ -9,7 +9,7 @@ const Carousel = () => {
       type: 'carousel',
     }).mount();
 
-  }, [Glide])
+  }, [])
   return (
       <div className="images glide">
         <div className="glide__track" data-glide-el="track">

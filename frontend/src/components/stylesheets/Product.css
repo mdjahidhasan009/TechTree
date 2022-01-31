@@ -1,16 +1,3 @@
-/*================================================
-                Products
-================================================*/
-.section .product-layout {
-  display: grid;
-  /*grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));*/
-  grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
-  gap: 3rem;
-  max-width: 130rem;
-  margin: 0 auto;
-  padding: 0 1.6rem;
-}
-
 .product {
   overflow: hidden;
 }
@@ -18,14 +5,15 @@
 .product .img-container {
   position: relative;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  height: 300px;
 }
 
-.product .img-container img {
-  object-fit: contain;
-  height: 40vh;
-  width: 30vw;
-  display: block;
-  margin: 0 auto;
+/* To force image not to overflow as it placed inside link*/
+.product .img-container a {
+  height: 100%;
+  width: 100%;
 }
 
 .product .bottom {
@@ -64,57 +52,15 @@
 }
 
 .product:hover .addCart {
-  border-radius: 1rem 0 0 0;
-}
-
-.product .addCart:hover {
-  /*background-color: var(--primary);*/
-  /*color: var(--white);*/
+  border-radius: 1rem;
 }
 
 .product i {
   transition: all 300ms ease-in-out;
 }
 
-.product .side-icons {
-  position: absolute;
-  right: 0;
-  top: 30%;
-  transform: translate(80%, -50%);
-  display: flex;
-  flex-direction: column;
-  padding: 1rem;
-  transition: all 500ms ease-in-out;
-}
-
-.product .side-icons span {
-  font-size: 1.4rem;
-  background-color: var(--white);
-  margin: 0.3rem;
-  padding: 1rem 1.3rem;
-  border-radius: 50%;
-  transition: all 300ms ease-in-out;
-}
-
-.product .side-icons span:hover {
-  background-color: var(--primary);
-  color: var(--white);
-}
-
-.product:hover .side-icons {
-  transform: translate(0%, -50%);
-}
-
-@media only screen and (max-width: 1031px ) {
-  .product .img-container img {
-    height: 50vh;
-    width: 40vw;
-  }
-}
-
-@media only screen and (max-width: 671px ) {
-  .product .img-container img {
-    height: 60vh !important;
-    width: 80vw !important;
-  }
+.product .img-container img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
 }

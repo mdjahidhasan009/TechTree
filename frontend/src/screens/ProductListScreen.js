@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import Paginate from '../components/Paginate';
-import {listProducts, deleteProduct, createProduct} from "../actions/productAction";
+import { listProducts, deleteProduct } from "../actions/productAction";
 import { PRODUCT_CREATE_RESET } from "../constants/productConstants";
 
 const ProductListScreen = ({ history, match }) => {
@@ -39,9 +39,8 @@ const ProductListScreen = ({ history, match }) => {
     }
   }
 
-  const createProductHandler = (product) => {
+  const createProductHandler = () => {
     history.push(`/admin/product/add`)
-    // dispatch(createProduct());
   }
 
   return (
@@ -101,7 +100,7 @@ const ProductListScreen = ({ history, match }) => {
               </tbody>
             </table>
           </div>
-          <Paginate totalPages={totalPages} page={page} isAdmin={true} />
+          <Paginate totalPages={totalPages} pageNumber={page} isAdmin={true} />
         </>
       )}
     </>

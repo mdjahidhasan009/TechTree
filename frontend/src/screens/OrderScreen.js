@@ -36,17 +36,6 @@ const OrderScreen = ({ match, history }) => {
 
   useEffect(() => {
     if(!userInfo) history.push('/login');
-    const addPayPalScript = async () => {
-      const { data: clientId } = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/config/paypal`);
-      const script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
-      script.async = true;
-      script.onload = () => {
-        setSdkReady(true);
-      }
-      document.body.appendChild(script);
-    }
 
     if(!order || successPay || successDeliver) {
       dispatch({ type: ORDER_PAY_RESET });
@@ -58,6 +47,18 @@ const OrderScreen = ({ match, history }) => {
       else setSdkReady(true);
     }
   }, [dispatch, orderId, successPay, order, successDeliver]);
+
+  const addPayPalScript = async () => {
+    const { data: clientId } = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/config/paypal`);
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
+    script.async = true;
+    script.onload = () => {
+      setSdkReady(true);
+    }
+    document.body.appendChild(script);
+  }
 
   const successPaymentHandler = (paymentResult) => {
     dispatch(payOrder(orderId, paymentResult));

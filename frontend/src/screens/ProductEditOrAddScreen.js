@@ -222,7 +222,7 @@ const ProductEditOrAddScreen = ({ match, history, mode }) => {
         {/* Product updating(after click update button) */}
         {loadingUpdate && <Loader />}
         {errorUpdate && <Message variant='danger'>{errorUpdate}</Message>}
-        {/* Initial page loading page */}
+        {/* Initial pageNumber loading pageNumber */}
         {loading ? (
           <Loader />
         ) : error ? (

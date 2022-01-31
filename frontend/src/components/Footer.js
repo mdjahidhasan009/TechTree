@@ -5,7 +5,7 @@ import './stylesheets/Footer.css';
 const Footer = () => {
   return (
         <footer>
-            <p>Copyright &copy; ProShop</p>
+            <p>Copyright &copy; TechTree</p>
         </footer>
   )
 }

@@ -25,11 +25,30 @@ import {
 } from "../constants/productConstants";
 import { MY_ORDER_LIST_FAIL, MY_ORDER_LIST_REQUEST, MY_ORDER_LIST_SUCCESS } from "../constants/orderConstants";
 
-export const listProducts = (keyword = '', pageNumber = '') => async (dispatch) => {
+// const { data } = await axios.get(
+//     `${process.env.REACT_APP_BACKEND_BASE_URL}/api/products?keyword=${keyword}&pageNumber=${pageNumber}`,
+//     {}, {
+//       params: {
+//         product: this.product
+//       }
+//     }
+// );
+
+export const listProducts = (keyword = '', pageNumber = '', brandsNeed) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST });
     const { data } = await axios.get(
-        `${process.env.REACT_APP_BACKEND_BASE_URL}/api/products?keyword=${keyword}&pageNumber=${pageNumber}`);
+        `${process.env.REACT_APP_BACKEND_BASE_URL}/api/products?keyword=${keyword}&pageNumber=${pageNumber}`,
+        {
+          params: {
+            brandsNeed
+          }
+      }
+    );
+
+    // const { data } = await axios.get(
+    //     `${process.env.REACT_APP_BACKEND_BASE_URL}/api/products?keyword=${keyword}&pageNumber=${pageNumber}`);
+    // console.log(data)
     dispatch({
       type: PRODUCT_LIST_SUCCESS,
       payload: data
@@ -119,7 +138,6 @@ export const createProduct = (product) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`
       }
     }
-    console.log(product)
     //as it is an post request so sending empty object
     const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/products`,product ,config);
     dispatch({

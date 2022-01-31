@@ -59,7 +59,7 @@ const Header = () => {
                 </label>
                 <ul className="drop-menu1">
                   <li><Link to="/profile">Profile</Link></li>
-                  <li><Link onClick={logoutHandler}>Logout</Link></li>
+                  <li><Link to="/login" onClick={logoutHandler}>Logout</Link></li>
                 </ul>
               </li>
             ) : (
@@ -70,7 +70,7 @@ const Header = () => {
             )}
             {userInfo && userInfo.isAdmin && (
               <li>
-                <Link href="" className="desktop-item">
+                <Link to="" className="desktop-item">
                   ADMIN <span><i className="fas fa-chevron-down" /></span>
                 </Link>
                 <input type="checkbox" id="showdrop2" />

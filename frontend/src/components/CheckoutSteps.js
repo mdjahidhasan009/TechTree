@@ -1,8 +1,8 @@
-import React from 'react';
-import { Nav } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
+import React from "react";
+import { Nav } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
-import './stylesheets/CheckoutSteps.css';
+import "./stylesheets/CheckoutSteps.css";
 
 const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
   return (
@@ -10,36 +10,36 @@ const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
       <div className="col-md-6 col-12">
         <div className="nav-item">
           {step1 ? (
-              <LinkContainer to='/login'>
+              <Link to='/login'>
                 <Nav.Link>Sign In</Nav.Link>
-              </LinkContainer>
+              </Link>
           ) : (
               <Nav.Link disabled>Sign In</Nav.Link>
           )}
         </div>
         <Nav.Item>
           {step2 ? (
-              <LinkContainer to='/shipping'>
+              <Link to='/shipping'>
                 <Nav.Link>Shipping</Nav.Link>
-              </LinkContainer>
+              </Link>
           ) : (
               <Nav.Link disabled>Shipping</Nav.Link>
           )}
         </Nav.Item>
         <Nav.Item>
           {step3 ? (
-              <LinkContainer to='/payment'>
+              <Link to='/payment'>
                 <Nav.Link>Payment</Nav.Link>
-              </LinkContainer>
+              </Link>
           ) : (
               <Nav.Link disabled>Payment</Nav.Link>
           )}
         </Nav.Item>
         <Nav.Item>
           {step4 ? (
-              <LinkContainer to='/placeorder'>
+              <Link to='/placeorder'>
                 <Nav.Link>Place Order</Nav.Link>
-              </LinkContainer>
+              </Link>
           ) : (
               <Nav.Link disabled>Place Order</Nav.Link>
           )}

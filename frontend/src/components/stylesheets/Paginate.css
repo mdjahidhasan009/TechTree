@@ -31,7 +31,7 @@
   color: var(--white);
 }
 
-.pagination .red {
+.pagination .selected {
   border: 1px solid var(--primary);
   background-color: var(--primary);
   color: var(--white);
