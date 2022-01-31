@@ -7,7 +7,7 @@ import {
   getProductById,
   getProducts,
   getTopProducts,
-  updateProduct
+  updateProduct,
 } from "../controllers/productController.js";
 import { isAdmin, protect } from "../middleware/authMiddleware.js";
 

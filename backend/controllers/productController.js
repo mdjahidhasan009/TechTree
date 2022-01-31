@@ -1,27 +1,47 @@
 import expressAsyncHandler from 'express-async-handler';
 
 import Product from "../models/productModel.js";
+import Brand from "../models/filterModel.js";
 
-// @desc    Fetch all products
+// @desc    Fetch all products,all product having certain string/letter in name with/without filtering(such as brand)
 // @route   GET api/products
 // @access  Public
-const getProducts = expressAsyncHandler(async (req, res) => {
-  const pageSize = 6;
-  const page = Number(req.query.pageNumber) || 1;
-  //may or may not send query keyword to search
+const getProducts = (async (req, res) => {
+  const productPerPage = 6;
+  const pageNumber = Number(req.query.pageNumber) || 1;
+  const brandsNeed = req.query.brandsNeed; //an array of brands for filtering
   const keyword = req.query.keyword
-      ? {
-          name: {
-            $regex: req.query.keyword,
-            $options: 'i' //for case insensitivity
-          }
+    ? { //passed keyword(string or char)
+        name: {
+          $regex: req.query.keyword,
+          $options: 'i' //for case insensitivity
         }
-      : {};
-  const count = await Product.countDocuments({ ...keyword });
-  const products = await Product.find({ ...keyword })
-      .limit(pageSize)
-      .skip(pageSize * (page - 1));
-  res.json({ products, page, totalPages: Math.ceil(count / pageSize)});
+      }
+    : {}; //no keyword
+  const brands = brandsNeed
+    ? {
+        brand: { $in: [...brandsNeed]}
+      }
+    : {};
+
+  const conditions = {
+    $and: [
+       keyword ,
+       brands
+    ]
+  };
+  const count = await Product.countDocuments({ ...conditions });
+  try {
+    const products = await Product.find({ ...conditions })
+        .limit(productPerPage)
+        .skip(productPerPage * (pageNumber - 1));
+    let brands = await Brand.find({});
+    brands = brands[0].brands;
+    res.json({ products, totalPages: Math.ceil(count / productPerPage), brands });
+  } catch (e) {
+    console.error(e);
+  }
+
 })
 
 // @desc    Fetch a product
@@ -137,7 +157,7 @@ const createProductReview = expressAsyncHandler(async (req, res) => {
 // @route   POST /api/products/top
 // @access  Public
 const getTopProducts = expressAsyncHandler(async (req, res) => {
-  const products = await Product.find({}).sort({ rating: - 1 }).limit(3);
+  const products = await Product.find({}).sort({ rating: -1 }).limit(3);
   res.json(products);
 })
 

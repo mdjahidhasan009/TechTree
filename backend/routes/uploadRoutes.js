@@ -1,11 +1,11 @@
-import express from 'express';
-import multer from 'multer';
-import path from 'path';
+import express from "express";
+import multer from "multer";
+import path from "path";
 const router = express.Router();
 
 const storage = multer.diskStorage({
   destination(req, file, cb) { //cd=>callback
-    cb(null, 'uploads/') //null=>error
+    cb(null, "uploads/") //null=>error
   },
   //path.extname will bring file ext name of file.originalname
   //file.fieldname fieldname in the form in this case is "image"(adding time if anyone add same image twice or more)
