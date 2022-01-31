@@ -21,6 +21,9 @@ import Footer from './components/Footer';
 
 import { Container } from "react-bootstrap";
 
+// import "../public/glidejs/glide.core.min.css";
+// import "../pullic/lidejs/glide.theme.min.css";
+
 const App = () => {
   return (
     <Router>

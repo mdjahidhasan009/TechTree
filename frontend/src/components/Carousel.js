@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import Glide from '@glidejs/glide'
 
 import './stylesheets/Carousel.css';
 
-const Carousel = () => {
+const Carousel = ({element = "glide"}) => {
   useEffect(() => {
     if(Glide)
       new Glide(".images",{
