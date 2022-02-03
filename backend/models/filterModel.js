@@ -18,6 +18,23 @@ const filterSchema = mongoose.Schema(
           required: true
         }
       }
+    ],
+    categories: [
+      {
+        name: {
+          type: String,
+          required: true
+        },
+        value: {
+          type: String,
+          required: true
+        },
+        isChecked: {
+          type: Boolean,
+          default: false,
+          required: true
+        }
+      }
     ]
   }
 )

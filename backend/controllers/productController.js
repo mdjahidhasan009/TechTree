@@ -1,16 +1,17 @@
 import expressAsyncHandler from 'express-async-handler';
 
 import Product from "../models/productModel.js";
-import Brand from "../models/filterModel.js";
+import Filter from "../models/filterModel.js";
 
 // @desc    Fetch all products,all product having certain string/letter in name with/without filtering(such as brand)
 // @route   GET api/products
 // @access  Public
-const getProducts = (async (req, res) => {
+const getProducts = expressAsyncHandler(async (req, res) => {
   const productPerPage = 6;
   const pageNumber = Number(req.query.pageNumber) || 1;
   const brandsNeed = req.query.brandsNeed; //an array of brands for filtering
-  const keyword = req.query.keyword
+  const categoriesNeed = req.query.categoriesNeed; //an array of categories for filtering
+  const keywordFilter = req.query.keyword
     ? { //passed keyword(string or char)
         name: {
           $regex: req.query.keyword,
@@ -18,30 +19,32 @@ const getProducts = (async (req, res) => {
         }
       }
     : {}; //no keyword
-  const brands = brandsNeed
+  const brandFilter = brandsNeed
     ? {
         brand: { $in: [...brandsNeed]}
       }
     : {};
+  const categoryFilter = req.query.categoriesNeed
+  ? {
+      category: { $in: [...categoriesNeed]}
+    }
+  : {};
 
   const conditions = {
     $and: [
-       keyword ,
-       brands
+      keywordFilter ,
+      brandFilter,
+      categoryFilter
     ]
   };
   const count = await Product.countDocuments({ ...conditions });
-  try {
-    const products = await Product.find({ ...conditions })
-        .limit(productPerPage)
-        .skip(productPerPage * (pageNumber - 1));
-    let brands = await Brand.find({});
-    brands = brands[0].brands;
-    res.json({ products, totalPages: Math.ceil(count / productPerPage), brands });
-  } catch (e) {
-    console.error(e);
-  }
-
+  const products = await Product.find({ ...conditions })
+      .limit(productPerPage)
+      .skip(productPerPage * (pageNumber - 1));
+  const filters = await Filter.find({});
+  let brands = filters[0].brands;
+  let categories = filters[0].categories;
+  res.json({ products, totalPages: Math.ceil(count / productPerPage), brands, categories });
 })
 
 // @desc    Fetch a product
@@ -157,8 +160,12 @@ const createProductReview = expressAsyncHandler(async (req, res) => {
 // @route   POST /api/products/top
 // @access  Public
 const getTopProducts = expressAsyncHandler(async (req, res) => {
-  const products = await Product.find({}).sort({ rating: -1 }).limit(3);
-  res.json(products);
+  const phones = await Product.find({ category: "phone" }).sort({ rating: -1 }).limit(3);
+  const earphones = await Product.find({ category: "earphone" }).sort({ rating: -1 }).limit(3);
+  const tablets = await Product.find({ category: "tablet" }).sort({ rating: -1 }).limit(3);
+  const laptops = await Product.find({ category: "laptop" }).sort({ rating: -1 }).limit(3);
+  const smartWatches = await Product.find({ category: "smartWatch" }).sort({ rating: -1 }).limit(3);
+  res.json({ phones, earphones, tablets, laptops, smartWatches });
 })
 
 export {

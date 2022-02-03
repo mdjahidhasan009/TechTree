@@ -2,7 +2,8 @@ import React, { useEffect } from "react";
 
 import "./stylesheets/Paginate.css";
 
-const Paginate = ({ history, totalPages, pageNumber, isAdmin = false, keyword = '', brandsNeed}) => {
+const Paginate =
+    ({ history, totalPages, pageNumber, isAdmin = false, keyword = '', brandsNeed, categoriesNeed}) => {
   const loadAnotherPage = (x) => {
     let forwardString = !isAdmin
       ? keyword
@@ -13,7 +14,8 @@ const Paginate = ({ history, totalPages, pageNumber, isAdmin = false, keyword = 
     const location = {
       pathname: forwardString,
       state: {
-        brandsNeed
+        brandsNeed,
+        categoriesNeed
       }
     };
 

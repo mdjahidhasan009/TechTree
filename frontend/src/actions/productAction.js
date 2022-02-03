@@ -1,6 +1,10 @@
 import axios from "axios";
 
 import {
+  PRODUCT_BRANDS_UPDATE_REQUEST,
+  PRODUCT_BRANDS_UPDATE_SUCCESS,
+  PRODUCT_CATEGORIES_UPDATE_REQUEST,
+  PRODUCT_CATEGORIES_UPDATE_SUCCESS,
   PRODUCT_CREATE_FAIL,
   PRODUCT_CREATE_REQUEST,
   PRODUCT_CREATE_REVIEW_FAIL,
@@ -23,36 +27,26 @@ import {
   PRODUCT_UPDATE_REQUEST,
   PRODUCT_UPDATE_SUCCESS
 } from "../constants/productConstants";
-import { MY_ORDER_LIST_FAIL, MY_ORDER_LIST_REQUEST, MY_ORDER_LIST_SUCCESS } from "../constants/orderConstants";
 
-// const { data } = await axios.get(
-//     `${process.env.REACT_APP_BACKEND_BASE_URL}/api/products?keyword=${keyword}&pageNumber=${pageNumber}`,
-//     {}, {
-//       params: {
-//         product: this.product
-//       }
-//     }
-// );
-
-export const listProducts = (keyword = '', pageNumber = '', brandsNeed) => async (dispatch) => {
+export const listProducts =
+    (keyword = '', pageNumber = '', brandsNeed, categoriesNeed) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST });
     const { data } = await axios.get(
         `${process.env.REACT_APP_BACKEND_BASE_URL}/api/products?keyword=${keyword}&pageNumber=${pageNumber}`,
         {
           params: {
-            brandsNeed
+            brandsNeed,
+            categoriesNeed
           }
       }
     );
-
-    // const { data } = await axios.get(
-    //     `${process.env.REACT_APP_BACKEND_BASE_URL}/api/products?keyword=${keyword}&pageNumber=${pageNumber}`);
-    // console.log(data)
     dispatch({
       type: PRODUCT_LIST_SUCCESS,
       payload: data
     });
+    if(brandsNeed.length > 0) dispatch(updateBrands(data.brands, brandsNeed));
+    if(categoriesNeed.length > 0) dispatch(updateCategories(data.categories, categoriesNeed));
   } catch (error) {
     dispatch({
       type: PRODUCT_LIST_FAIL,
@@ -101,9 +95,7 @@ export const getProductDetails = (id) => async (dispatch) => {
 
 export const deleteProduct = (id) => async (dispatch, getState) => {
   try {
-    dispatch({
-      type: PRODUCT_DELETE_REQUEST
-    })
+    dispatch({ type: PRODUCT_DELETE_REQUEST });
 
     const { userLogin: { userInfo }} = getState();
 
@@ -127,9 +119,7 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
 
 export const createProduct = (product) => async (dispatch, getState) => {
   try {
-    dispatch({
-      type: PRODUCT_CREATE_REQUEST
-    })
+    dispatch({ type: PRODUCT_CREATE_REQUEST });
 
     const { userLogin: { userInfo }} = getState();
 
@@ -157,9 +147,7 @@ export const createProduct = (product) => async (dispatch, getState) => {
 
 export const updateProduct = (product) => async (dispatch, getState) => {
   try {
-    dispatch({
-      type: PRODUCT_UPDATE_REQUEST
-    })
+    dispatch({ type: PRODUCT_UPDATE_REQUEST });
 
     const { userLogin: { userInfo }} = getState();
 
@@ -189,9 +177,7 @@ export const updateProduct = (product) => async (dispatch, getState) => {
 
 export const createProductReview = (productId, review) => async (dispatch, getState) => {
   try {
-    dispatch({
-      type: PRODUCT_CREATE_REVIEW_REQUEST
-    })
+    dispatch({ type: PRODUCT_CREATE_REVIEW_REQUEST });
 
     const { userLogin: { userInfo }} = getState();
 
@@ -211,5 +197,39 @@ export const createProductReview = (productId, review) => async (dispatch, getSt
               ? error.response.data.message
               : error.message
     })
+  }
+}
+
+export const updateBrands = (brands, brandsNeed) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: PRODUCT_BRANDS_UPDATE_REQUEST });
+    const tempBrands = [...brands];
+    const tempBrandsNeed = [...brandsNeed];
+
+    tempBrands.map(item => {
+      if(tempBrandsNeed.indexOf(item.value) > -1) {
+        item.isChecked = true;
+      }
+    });
+    dispatch({ type: PRODUCT_BRANDS_UPDATE_SUCCESS, payload: tempBrands });
+  } catch (e) {
+
+  }
+}
+
+export const updateCategories = (categories, categoriesNeed) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: PRODUCT_CATEGORIES_UPDATE_REQUEST });
+    const tempCategories = [...categories];
+    const tempCategoriesNeed = [...categoriesNeed];
+
+    tempCategories.map(item => {
+      if(tempCategoriesNeed.indexOf(item.value) > -1) {
+        item.isChecked = true;
+      }
+    });
+    dispatch({ type: PRODUCT_CATEGORIES_UPDATE_SUCCESS, payload: tempCategories });
+  } catch (e) {
+
   }
 }

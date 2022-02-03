@@ -1,4 +1,7 @@
 import {
+  PRODUCT_BRANDS_UPDATE_FAIL,
+  PRODUCT_BRANDS_UPDATE_REQUEST,
+  PRODUCT_BRANDS_UPDATE_SUCCESS, PRODUCT_CATEGORIES_UPDATE_FAIL, PRODUCT_CATEGORIES_UPDATE_SUCCESS,
   PRODUCT_CREATE_FAIL,
   PRODUCT_CREATE_REQUEST,
   PRODUCT_CREATE_RESET, PRODUCT_CREATE_REVIEW_FAIL,
@@ -23,16 +26,48 @@ import {
 export const productListReducer = (state = { products: [] }, action) => {
   switch (action.type) {
     case PRODUCT_LIST_REQUEST:
-      return { loading: true, products: [] }
+      return { loading: true, products: [], totalPages: 0, brands: [], categories: [] }
+    case PRODUCT_BRANDS_UPDATE_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        brands: []
+      }
     case PRODUCT_LIST_SUCCESS:
       return {
         loading: false,
         products: action.payload.products,
         totalPages: action.payload.totalPages,
-        brands: action.payload.brands
+        brands: action.payload.brands,
+        categories: action.payload.categories
       }
     case PRODUCT_LIST_FAIL:
       return { loading: false, error: action.payload }
+    case PRODUCT_BRANDS_UPDATE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        brands: action.payload
+      }
+    case PRODUCT_BRANDS_UPDATE_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
+      }
+    case PRODUCT_CATEGORIES_UPDATE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        categories: action.payload
+      }
+    case PRODUCT_CATEGORIES_UPDATE_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
+      }
+
     default:
       return state
   }

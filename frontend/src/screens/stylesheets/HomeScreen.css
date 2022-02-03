@@ -1,3 +1,7 @@
+.products .flex-col {
+  flex-direction: column;
+}
+
 .product-layout {
   display: flex;
 }
@@ -6,7 +10,7 @@
   width: 10%;
 }
 
-.filter-container input[type="checkbox"]{
+.filter input[type="checkbox"]{
   margin-right: 5px;
 }
 
@@ -22,16 +26,22 @@
   max-width: 130rem;
   margin: 0 auto;
   padding: 0 1.6rem;
+  width: 100%;
 }
 
 @media only screen and (max-width: 1050px) {
   .product-layout {
     flex-direction: column;
   }
-  .filter-container, .products-container {
+
+  .filter-container {
+    display: contents;
+  }
+
+  .filter, .products-container {
     width: 100%;
   }
-  .filter-container li {
+  .filter li {
     display: inline-block;
     margin-right: 10px;
   }

@@ -227,8 +227,7 @@ main {
 }
 
 section .title {
-  text-align: center;
-  margin-bottom: 3rem;
+  margin: 3rem;
 }
 
 
