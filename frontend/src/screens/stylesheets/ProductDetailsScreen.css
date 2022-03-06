@@ -312,9 +312,25 @@
 }
 
 .product-review .preview-list {
-  margin: 0.5rem 0 1rem 2.5rem;
+  margin: 1rem;
 }
 
 .product-review .preview-create {
   margin-top: 3rem;
+}
+
+.product-review h5, .edit, .delete {
+  display: inline-block;
+}
+
+.product-review .edit, .delete {
+  margin: 0 10px;
+}
+
+.product-review .edit {
+  color: blue;
+}
+
+.product-review .delete {
+  color: red;
 }

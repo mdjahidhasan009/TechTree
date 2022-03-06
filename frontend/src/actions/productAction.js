@@ -12,11 +12,11 @@ import {
   PRODUCT_CREATE_REVIEW_SUCCESS,
   PRODUCT_CREATE_SUCCESS,
   PRODUCT_DELETE_FAIL,
-  PRODUCT_DELETE_REQUEST,
+  PRODUCT_DELETE_REQUEST, PRODUCT_DELETE_REVIEW_FAIL, PRODUCT_DELETE_REVIEW_REQUEST, PRODUCT_DELETE_REVIEW_SUCCESS,
   PRODUCT_DELETE_SUCCESS,
   PRODUCT_DETAILS_FAIL,
   PRODUCT_DETAILS_REQUEST,
-  PRODUCT_DETAILS_SUCCESS,
+  PRODUCT_DETAILS_SUCCESS, PRODUCT_EDIT_REVIEW_FAIL, PRODUCT_EDIT_REVIEW_REQUEST, PRODUCT_EDIT_REVIEW_SUCCESS,
   PRODUCT_LIST_FAIL,
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
@@ -192,6 +192,58 @@ export const createProductReview = (productId, review) => async (dispatch, getSt
   } catch (error) {
     dispatch({
       type: PRODUCT_CREATE_REVIEW_FAIL,
+      payload:
+          error.response && error.response.data.message
+              ? error.response.data.message
+              : error.message
+    })
+  }
+}
+
+export const editProductReview = (productId, reviewId ,review) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: PRODUCT_EDIT_REVIEW_REQUEST });
+
+    const { userLogin: { userInfo }} = getState();
+
+    const config = {
+      headers: {
+        'Context-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`
+      }
+    }
+    await axios.put(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/products/${productId}/reviews/${reviewId}`,
+        review ,config);
+    dispatch({ type: PRODUCT_EDIT_REVIEW_SUCCESS });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_EDIT_REVIEW_FAIL,
+      payload:
+          error.response && error.response.data.message
+              ? error.response.data.message
+              : error.message
+    })
+  }
+}
+
+export const deleteProductReview = (productId, reviewId ,review) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: PRODUCT_DELETE_REVIEW_REQUEST });
+
+    const { userLogin: { userInfo }} = getState();
+
+    const config = {
+      headers: {
+        'Context-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`
+      }
+    }
+    await axios.delete(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/products/${productId}/reviews/${reviewId}`,
+        config);
+    dispatch({ type: PRODUCT_DELETE_REVIEW_SUCCESS });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_DELETE_REVIEW_FAIL,
       payload:
           error.response && error.response.data.message
               ? error.response.data.message

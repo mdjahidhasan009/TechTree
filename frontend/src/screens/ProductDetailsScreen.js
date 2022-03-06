@@ -3,20 +3,22 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import Rating from "../components/Rating";
-import { getProductDetails, createProductReview } from "../actions/productAction";
+import {getProductDetails, createProductReview, editProductReview, deleteProductReview} from "../actions/productAction";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import Meta from "../components/Meta";
-import { PRODUCT_CREATE_REVIEW_RESET } from "../constants/productConstants";
+import { PRODUCT_REVIEW_RESET } from "../constants/productConstants";
 
-import './stylesheets/ProductScreen.css';
+import './stylesheets/ProductDetailsScreen.css';
 
-const ProductScreen = ({ history, match }) => {
+const ProductDetailsScreen = ({ history, match }) => {
   const [ rating, setRating ] = useState(0);
   const [ comment, setComment ] = useState('');
   const [ mainImg, setMainImg ] = useState({});
   const [ quantity, setQuantity ] = useState(1);
   const [ selectedNavTab, setSelectedNavTab ] = useState("Details");
+  const [ isEditingReview, setIsEditingReview ] = useState(false);
+  const [ idOfClickReviewToEdit, setIdOfClickReviewToEdit ] = useState(0);
 
   const dispatch = useDispatch();
 
@@ -35,10 +37,10 @@ const ProductScreen = ({ history, match }) => {
 
   useEffect(() => {
     if(successProductReview) {
-      alert('Review Submitted');
+      // alert('Review Submitted');
       setRating(0);
       setComment('');
-      dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
+      dispatch({ type: PRODUCT_REVIEW_RESET });
     }
     dispatch(getProductDetails(match.params.id));
   }, [dispatch, match, successProductReview]);
@@ -47,9 +49,29 @@ const ProductScreen = ({ history, match }) => {
     history.push(`/cart/${match.params.id}?qty=${quantity}`);
   }
 
+  const goToCart = () => {
+    history.push(`/cart`);
+  }
+
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(createProductReview(match.params.id, { rating, comment }));
+    if(isEditingReview) {
+      dispatch(editProductReview(match.params.id, idOfClickReviewToEdit, { rating, comment }));
+    } else
+      dispatch(createProductReview(match.params.id, { rating, comment }));
+  }
+
+  const deleteReview = (reviewId) => {
+    const willDelete = confirm('Are you sure will delete this review?');
+    if(willDelete)
+      dispatch(deleteProductReview(match.params.id, reviewId));
+  }
+
+  const editReview = (review) => {
+    setComment(review.comment);
+    setRating(review.rating);
+    setIsEditingReview(true);
+    setIdOfClickReviewToEdit(review._id);
   }
 
   const changeQuantity = (e) => {
@@ -82,7 +104,7 @@ const ProductScreen = ({ history, match }) => {
                       <div className="product_images--thumbnails">
                         {product?.productStock.map((item, index) => (
                           <div className="images-container__thumbnails">
-                            <img className={(mainImg.url === item.imageURL ? 'selected' : "")}
+                            <img alt="no image" className={(mainImg.url === item.imageURL ? 'selected' : "")}
                               id="img1"
                               src={`${process.env.REACT_APP_BACKEND_BASE_URL}${item.imageURL}`}
                               onClick={(e) => setMainImg(
@@ -100,7 +122,7 @@ const ProductScreen = ({ history, match }) => {
 
                   <div className="button-container">
                     <button className="addCart" onClick={addToCartHandler}>Add To Cart</button>
-                    <button className="buyNow">Buy Now</button>
+                    <button className="buyNow" onClick={goToCart}>Buy Now</button>
                   </div>
 
               </div>
@@ -186,8 +208,15 @@ const ProductScreen = ({ history, match }) => {
                   {/*<h2>Reviews</h2>*/}
                   {product.reviews.length === 0 && <Message>No Reviews</Message>}
                   {product.reviews.map((review) => (
-                      <div className="preview-list" key={product._id}>
-                        <strong>{review.name}</strong>
+                      <div className="preview-list" key={review._id}>
+                        <h5>{review.name}</h5>
+                        {review.user === userInfo._id
+                          ? <>
+                              <p className="edit" onClick={() => editReview(review)}>Edit</p>
+                              <p className="delete" onClick={() => deleteReview(review._id)}>Delete</p>
+                            </>
+                          : ""
+                        }
                         <Rating value={review.rating}  text=''/>
                         <p>{review.createdAt.substring(0,10)}</p>
                         <p>{review.comment}</p>
@@ -197,9 +226,15 @@ const ProductScreen = ({ history, match }) => {
                   <div className="preview-create">
                     {userInfo ? (
                         <>
-                          <h2>Write a Customer Review</h2>
+                          {isEditingReview
+                              ? <h2>Edit Your Review</h2>
+                              : <h2>Write a Customer Review</h2>
+                          }
                           {errorProductReview && (
-                              <Message variant='danger'>{errorProductReview}</Message>
+                              <>
+                                <Message variant='danger'>{errorProductReview}</Message>
+                              </>
+
                           )}
                           <form action="">
                             <div className="form-group">
@@ -221,7 +256,9 @@ const ProductScreen = ({ history, match }) => {
                                         onChange={(e) => setComment(e.target.value)}
                               />
                             </div>
-                            <button onClick={submitHandler} type="submit" className="btn btn-default">Submit</button>
+                            <button onClick={submitHandler} type="submit" className="btn btn-default">
+                              {isEditingReview ? "Edit Review" : "Submit"}
+                            </button>
                           </form>
                         </>
                     ): (
@@ -241,4 +278,4 @@ const ProductScreen = ({ history, match }) => {
   )
 }
 
-export default ProductScreen;
+export default ProductDetailsScreen;

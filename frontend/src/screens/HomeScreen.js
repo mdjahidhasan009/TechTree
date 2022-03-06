@@ -30,13 +30,8 @@ const HomeScreen = ({ match, history }) => {
 
   //If keyword/pageNumber/brandsNeed(brand filter) exits(means searching for products)
   useEffect(() => {
-    console.log("list of products")
-    // if(match.params.keyword) setKeyword(match.params.keyword);
-    // if(match.params.pageNumber) setPageNumber(match.params.pageNumber);
     if(keyword !== "" || brandsNeed.length > 0 || categoriesNeed.length > 0 || pageNumber !== 0) {
       dispatch(listProducts(keyword, pageNumber, brandsNeed, categoriesNeed));
-      // keyword = match.params.keyword;
-      // pageNumber = match.params.pageNumber;
     }
     if(location?.state?.brandsNeed) {
       setBrandsNeed(location?.state?.brandsNeed);
@@ -55,8 +50,6 @@ const HomeScreen = ({ match, history }) => {
     console.log("list of top products")
     if(keyword === "" && pageNumber === 0) {
       dispatch(listTopProducts());
-      // keyword = match.params.keyword;
-      // pageNumber = match.params.pageNumber;
     }
 
   }, []);
@@ -95,8 +88,6 @@ const HomeScreen = ({ match, history }) => {
   return (
     <>
       <Meta />
-      {console.log(keyword)}
-      {console.log(pageNumber)}
       {(keyword === "" && pageNumber === 0)
         ? <Carousel />
         : (
@@ -107,15 +98,56 @@ const HomeScreen = ({ match, history }) => {
       <section className="section products">
         {keyword === "" && pageNumber === 0 && (
           <div className="title text-center">
-            <h2>Top Products</h2>
-            <span><small>Select from the premium product and save plenty money.</small></span>
+            <div className="services-container">
+              <div className="service">
+                <div className="service-img">
+                  <img src="/images/icons/service-1.png" alt=""/>
+                </div>
+                <div className="service-desc">
+                  <h5>Get Free Delivery</h5>
+                  <p>Order more than 1K BDT</p>
+                </div>
+              </div>
+
+              <div className="service">
+                <div className="service-img">
+                  <img src="/images/icons/service-2.png" alt=""/>
+                </div>
+                <div className="service-desc">
+                  <h5>Delivery in 24 hours</h5>
+                  <p>In Dhaka City only.</p>
+                </div>
+              </div>
+
+              <div className="service">
+                <div className="service-img">
+                  <img src="/images/icons/service-3.png" alt=""/>
+                </div>
+                <div className="service-desc">
+                  <h5>Money Back Guarantee</h5>
+                  <p>1 month money back guarantee</p>
+                </div>
+              </div>
+
+              <div className="service">
+                <div className="service-img">
+                  <img src="/images/icons/service-4.png" alt=""/>
+                </div>
+                <div className="service-desc">
+                  <h5>Lowest Price</h5>
+                  <p>Get lowest price from us.</p>
+                </div>
+              </div>
+            </div>
+
+            {/*<h2>Top Products</h2>*/}
+            <h5 style={{ margin: '4rem' }}>Top products of different categories are given below.</h5>
           </div>
         )}
 
         <div className={`product-layout ${(keyword === "" && pageNumber === 0) ? "flex-col" : ""}`}>
           {(keyword !== "" || pageNumber !== 0) && (
             <div className="filter-container">
-              {console.log(keyword)}{ console.log(pageNumber)}
               {/* All filter options */}
               <div className="filter">
                 <h4>Brands</h4>

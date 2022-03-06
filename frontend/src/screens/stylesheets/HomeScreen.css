@@ -1,3 +1,29 @@
+.products h5 {
+  margin: 5px;
+}
+
+.sub-title {
+  text-align: left;
+  margin-left: 16px;
+}
+
+.sub-title h2 {
+  border-left: 6px solid darkblue;
+  padding: 0 0 0 5px;
+  margin: 1.5rem 1.5rem 1.5rem 0;
+}
+
+.services-container {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 20px;
+}
+
+.service-img {
+  margin-bottom: 5px;
+}
+
 .products .flex-col {
   flex-direction: column;
 }
@@ -44,6 +70,12 @@
   .filter li {
     display: inline-block;
     margin-right: 10px;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .services-container {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 

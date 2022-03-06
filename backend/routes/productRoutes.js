@@ -3,7 +3,7 @@ import express from "express";
 import {
   createProduct,
   createProductReview,
-  deleteProduct,
+  deleteProduct, deleteProductReview, editProductReview,
   getProductById,
   getProducts,
   getTopProducts,
@@ -18,10 +18,17 @@ router.route('/')
     .get(getProducts)
     .post(protect, isAdmin, createProduct);
 router.get('/top', getTopProducts);
+
 router.route('/:id')
     .get(getProductById)
     .delete(protect, isAdmin, deleteProduct)
     .put(protect, isAdmin, updateProduct);
-router.route('/:id/reviews').post(protect, createProductReview);
+
+router.route('/:id/reviews')
+    .post(protect, createProductReview);
+
+router.route('/:productId/reviews/:reviewId')
+    .put(protect, editProductReview)
+    .delete(protect, deleteProductReview);
 
 export default router;

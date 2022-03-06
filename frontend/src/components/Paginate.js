@@ -22,7 +22,7 @@ const Paginate =
     history.push(location);
   }
 
-  return totalPages > 1 && (
+  return totalPages > 1 && (keyword !== "" || pageNumber !== 0) && (
     // Pagination
     <ul className="pagination">
       {[...Array(totalPages).keys()].map(x => (
@@ -30,7 +30,7 @@ const Paginate =
           key={x + 1}
           onClick={() => loadAnotherPage(x)}
         >
-          <span className={x+1 == pageNumber ? 'selected' : ''}>{x + 1}</span>
+          <span className={x+1 === pageNumber ? 'selected' : ''}>{x + 1}</span>
         </div>
       ))}
     </ul>

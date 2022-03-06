@@ -156,6 +156,70 @@ const createProductReview = expressAsyncHandler(async (req, res) => {
   }
 })
 
+// @desc    Edit existing review
+// @route   PUT api/products/:id/reviews/:reviewId
+// @access  Private
+const editProductReview = expressAsyncHandler(async (req, res) => {
+  const { rating, comment } = req.body;
+  const product = await Product.findById(req.params.productId);
+
+  if(product) {
+    const isCurrentUserMadeThisReview = product.reviews.find(review =>
+        review._id.toString() === req.params.reviewId.toString() && //for selecting clicked review using review Id
+        review.user.toString() === req.user._id.toString() //to check does current user create this review
+    );
+    if(!isCurrentUserMadeThisReview) {
+      res.status(400);
+      throw new Error("Server Error");
+    } else {
+      await Product.update(
+          { _id: req.params.productId, 'reviews._id': req.params.reviewId },
+          {
+            '$set': {
+              'reviews.$.rating': rating,
+              'reviews.$.comment': comment
+            }
+          }
+      )
+      res.status(201).json({ message: 'Product Review Edited' });
+    }
+  } else {
+    res.status(404);
+    throw new Error('Product Not Found!');
+  }
+});
+
+// @desc    Deleting existing review
+// @route   DELETE api/products/:id/reviews/:reviewId
+// @access  Private
+const deleteProductReview = expressAsyncHandler(async (req, res) => {
+  const product = await Product.findById(req.params.productId);
+
+  if(product) {
+    const isCurrentUserMadeThisReview = product.reviews.find(review =>
+        review._id.toString() === req.params.reviewId.toString() && //for selecting clicked review using review Id
+        review.user.toString() === req.user._id.toString() //to check does current user create this review
+    );
+    if(!isCurrentUserMadeThisReview) {
+      res.status(400);
+      throw new Error("Server Error");
+    } else {
+      await Product.update(
+          { _id: req.params.productId },
+          {
+            '$pull': {
+              'reviews': { '_id': req.params.reviewId }
+            }
+          }
+      )
+      res.status(201).json({ message: 'Product Review Deleted' });
+    }
+  } else {
+    res.status(404);
+    throw new Error('Product Not Found!');
+  }
+});
+
 // @desc    Get Top Rated Product
 // @route   POST /api/products/top
 // @access  Public
@@ -175,5 +239,7 @@ export {
   createProduct,
   updateProduct,
   createProductReview,
+  editProductReview,
+  deleteProductReview,
   getTopProducts
 };
