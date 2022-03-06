@@ -18,9 +18,7 @@ const HomeScreen = ({ match, history }) => {
   const location = useLocation();
 
   const [ keyword, setKeyword ] = useState("");
-      // = match.params.keyword;
   const [ pageNumber, setPageNumber ] = useState(0);
-      // match.params.pageNumber;
 
   const productList = useSelector(state => state.productList);
   const { loading, error, products, totalPages, brands, categories } = productList;
@@ -46,8 +44,6 @@ const HomeScreen = ({ match, history }) => {
   }, [dispatch, keyword, pageNumber, brandsNeed, categoriesNeed]);
 
   useEffect(() => {
-
-    console.log("list of top products")
     if(keyword === "" && pageNumber === 0) {
       dispatch(listTopProducts());
     }

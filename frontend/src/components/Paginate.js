@@ -1,9 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
+import { useHistory } from "react-router-dom";
+
 
 import "./stylesheets/Paginate.css";
 
 const Paginate =
-    ({ history, totalPages, pageNumber, isAdmin = false, keyword = '', brandsNeed, categoriesNeed}) => {
+    ({ totalPages, pageNumber, isAdmin = false, keyword = '', brandsNeed, categoriesNeed}) => {
+  let history = useHistory();
   const loadAnotherPage = (x) => {
     let forwardString = !isAdmin
       ? keyword
@@ -30,7 +33,7 @@ const Paginate =
           key={x + 1}
           onClick={() => loadAnotherPage(x)}
         >
-          <span className={x+1 === pageNumber ? 'selected' : ''}>{x + 1}</span>
+          <span className={x+1 == pageNumber ? 'selected' : ''}>{x + 1}</span>
         </div>
       ))}
     </ul>

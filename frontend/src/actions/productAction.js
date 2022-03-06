@@ -45,8 +45,8 @@ export const listProducts =
       type: PRODUCT_LIST_SUCCESS,
       payload: data
     });
-    if(brandsNeed.length > 0) dispatch(updateBrands(data.brands, brandsNeed));
-    if(categoriesNeed.length > 0) dispatch(updateCategories(data.categories, categoriesNeed));
+    if(brandsNeed && brandsNeed.length > 0) dispatch(updateBrands(data.brands, brandsNeed));
+    if(categoriesNeed && categoriesNeed.length > 0) dispatch(updateCategories(data.categories, categoriesNeed));
   } catch (error) {
     dispatch({
       type: PRODUCT_LIST_FAIL,

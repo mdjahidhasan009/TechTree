@@ -475,7 +475,7 @@ const ProductEditOrAddScreen = ({ match, history, mode }) => {
 
               </>
             ))}
-            <button className="btn btn-default">{submitBtnName}</button>
+            <button className="btn btn-default d-block mt-3">{submitBtnName}</button>
           </form>
           )
         }

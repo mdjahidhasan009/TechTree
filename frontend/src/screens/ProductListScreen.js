@@ -14,7 +14,7 @@ const ProductListScreen = ({ history, match }) => {
   const dispatch = useDispatch();
 
   const productList = useSelector(state => state.productList);
-  const { loading, error, products, page, totalPages } = productList;
+  const { loading, error, products, totalPages } = productList;
 
   const productDelete = useSelector(state => state.productDelete);
   const { loading: loadingDelete, error: errorDelete, success: successDelete } = productDelete;
@@ -100,7 +100,7 @@ const ProductListScreen = ({ history, match }) => {
               </tbody>
             </table>
           </div>
-          <Paginate totalPages={totalPages} pageNumber={page} isAdmin={true} />
+          <Paginate totalPages={totalPages} pageNumber={pageNumber} isAdmin={true} />
         </>
       )}
     </>
