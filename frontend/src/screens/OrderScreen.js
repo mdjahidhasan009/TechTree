@@ -37,7 +37,7 @@ const OrderScreen = ({ match, history }) => {
   useEffect(() => {
     if(!userInfo) history.push('/login');
 
-    if(!order || successPay || successDeliver) {
+    if(!order || order._id !== match.params.id ||successPay || successDeliver) {
       dispatch({ type: ORDER_PAY_RESET });
       dispatch({ type: ORDER_DELIVER_RESET });
       dispatch(getOrderDetails(orderId));
@@ -46,7 +46,7 @@ const OrderScreen = ({ match, history }) => {
       if(!window.paypal) addPayPalScript();
       else setSdkReady(true);
     }
-  }, [dispatch, orderId, successPay, order, successDeliver]);
+  }, [dispatch, orderId, successPay, order, successDeliver, match.params.id]);
 
   const addPayPalScript = async () => {
     const { data: clientId } = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/config/paypal`);
@@ -80,8 +80,8 @@ const OrderScreen = ({ match, history }) => {
                   <div className="list-item">
                     <h2>Shipping</h2>
                     <p>
-                      <strong>Name: </strong> {order.user.name}</p>
-                    <p><strong>Email: </strong><a href={`mailto:${order.user.email}`}> {order.user.email}</a></p>
+                      <strong>Name: </strong> {order && order.user.name}</p>
+                    <p><strong>Email: </strong><a href={`mailto:${order && order.user.email}`}> {order.user.email}</a></p>
                     <p>
                       <strong>Address: </strong>
                       {order.shippingAddress.address},

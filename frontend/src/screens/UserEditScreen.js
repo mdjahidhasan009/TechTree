@@ -61,6 +61,7 @@ const UserEditScreen = ({ match, history }) => {
                 <input
                     id="name"
                     type="text"
+                    disabled="true"
                     className="form-control"
                     placeholder="Enter name"
                     value={name}
@@ -72,6 +73,7 @@ const UserEditScreen = ({ match, history }) => {
                 <input
                     id="email"
                     type="email"
+                    disabled="true"
                     className="form-control"
                     placeholder="Enter Email"
                     value={email}
@@ -80,13 +82,13 @@ const UserEditScreen = ({ match, history }) => {
               </div>
               <div className="form-group">
                 <input
-                    id="isadmin"
+                    id="isAdmin"
                     type="checkbox"
                     className="form-check-input"
                     checked={isAdmin}
                     onChange={(e) => setIsAdmin(e.target.checked)}
                 />
-                <label title="" htmlFor="isadmin" className="form-check-label">Is Admin</label>
+                <label title="" htmlFor="isAdmin" className="form-check-label">Is Admin</label>
               </div>
               <button className='btn btn-primary'>Update</button>
             </form>

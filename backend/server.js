@@ -40,7 +40,9 @@ app.get('/', (req, res) => {
 app.use(notFound);
 app.use(errorHandler);
 
-app.listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} mode on port: ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running in ${process.env.NODE_ENV} mode on port: ${PORT}`)
+});
 
 //enable CORS
 function initCors () {
@@ -53,7 +55,8 @@ function initCors () {
     });
   } else {
     app.use(function(req, res, next) {
-      res.header("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
+      // res.header("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
+      res.header("Access-Control-Allow-Origin", "*");
       // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
       res.header("Access-Control-Allow-Headers","*");
       // res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");

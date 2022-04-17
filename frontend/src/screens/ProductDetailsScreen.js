@@ -37,7 +37,6 @@ const ProductDetailsScreen = ({ history, match }) => {
 
   useEffect(() => {
     if(successProductReview) {
-      // alert('Review Submitted');
       setRating(0);
       setComment('');
       dispatch({ type: PRODUCT_REVIEW_RESET });
@@ -187,6 +186,8 @@ const ProductDetailsScreen = ({ history, match }) => {
 
 
             <div className="tab-nav-container">
+
+
               {/* Product Details*/}
               {selectedNavTab === "Details" && (
                 //if rendering finished before fetching product details
@@ -202,26 +203,33 @@ const ProductDetailsScreen = ({ history, match }) => {
                   </div>
                 )))
               }
+
+
+
               {/* Reviews */}
               {selectedNavTab === "Reviews" && (
                 <div className="container product-review">
-                  {/*<h2>Reviews</h2>*/}
+                  <h2>Reviews</h2>
                   {product.reviews.length === 0 && <Message>No Reviews</Message>}
                   {product.reviews.map((review) => (
-                      <div className="preview-list" key={review._id}>
-                        <h5>{review.name}</h5>
-                        {review.user === userInfo._id
-                          ? <>
-                              <p className="edit" onClick={() => editReview(review)}>Edit</p>
-                              <p className="delete" onClick={() => deleteReview(review._id)}>Delete</p>
-                            </>
-                          : ""
-                        }
-                        <Rating value={review.rating}  text=''/>
-                        <p>{review.createdAt.substring(0,10)}</p>
-                        <p>{review.comment}</p>
-                        <hr/>
-                      </div>
+                        <div className="preview-list" key={review._id}>
+                          <h5>{review.name}</h5>
+                          {review.user === userInfo?._id //without optional chaining throw error when user is not logged in as then there are no _id.
+                              ?
+                                <>
+                                  <p className="edit" onClick={() => editReview(review)}>Edit</p>
+                                  <p className="delete" onClick={() => deleteReview(review._id)}>Delete</p>
+                                </>
+                              :
+                                ""
+                          }
+                          <Rating value={review.rating}  text=''/>
+                          <p>{review.createdAt.substring(0,10)}</p>
+                          <p>{review.comment}</p>
+                          <hr/>
+                        </div>
+
+
                   ))}
                   <div className="preview-create">
                     {userInfo ? (
