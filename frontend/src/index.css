@@ -200,6 +200,41 @@ tr {
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
+.auth-form, .dummy-password {
+  width: 50%;
+  padding: 50px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: rgba(100, 100, 111, 0.2) 0 7px 29px 0;
+}
+
+.auth-form p {
+  margin-top: 10px;
+}
+
+.dummy-password {
+  margin-top: 40px;
+  overflow-x:auto;
+}
+
+.dummy-password td:last-child,
+.dummy-password th:last-child{
+  text-align: left;
+}
+
+@media only screen and (max-width: 1000px) {
+  .auth-form {
+    width: 80%;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .auth-form {
+    width: 90%;
+  }
+}
+
+
 textarea {
   overflow: auto;
   resize: vertical;

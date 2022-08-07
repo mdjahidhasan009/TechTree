@@ -29,38 +29,63 @@ const LoginScreen = ({ location, history }) => {
   }
   return (
     <FormContainer>
-      <h1>Sign In</h1>
-      {error && <Message variant="danger">{error}</Message>}
-      {loading && <Loader />}
-      <form onSubmit={submitHandler}>
-        <div className="form-group">
-          <label className="form-label" htmlFor="email">Email Address</label>
-          <input
+      <div className="auth-form">
+        <h1>Sign In</h1>
+        {error && <Message variant="danger">{error}</Message>}
+        {loading && <Loader />}
+        <form onSubmit={submitHandler}>
+          <div className="form-group">
+            <label className="form-label" htmlFor="email">Email Address</label>
+            <input
               id="email"
               type="email"
               className="form-control"
               placeholder="Enter Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div className="form-group">
-          <label className="form-label" htmlFor="password">Password</label>
-          <input
+            />
+          </div>
+          <div className="form-group">
+            <label className="form-label" htmlFor="password">Password</label>
+            <input
               id="password"
               type="password"
               className="form-control"
               placeholder="Enter Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <button className="btn btn-default">Sign In</button>
-      </form>
-      {/*  <Col>*/}
+            />
+          </div>
+          <button className="btn btn-default">Sign In</button>
+        </form>
+        <p>
           New Customer? <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>Register</Link>
-      {/*  </Col>*/}
-      {/*</Row>*/}
+        </p>
+      </div>
+
+      <div className="auth-form dummy-password">
+        <table>
+          <thead>
+            <tr>
+              <th>User Type</th>
+              <th>Email</th>
+              <th>Password</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Normal User</td>
+            <td>new2@gmail.com</td>
+            <td>123456</td>
+          </tr>
+          <tr>
+            <td>Admin User</td>
+            <td>admin@gmail.com</td>
+            <td>123456</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </FormContainer>
   )
 }
