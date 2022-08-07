@@ -11,7 +11,6 @@ const addOrderItems = expressAsyncHandler(async(req, res) => {
   if(orderItems && orderItems === 0) {
     res.status(400)
     throw new Error('No order items');
-    return;
   } else {
     const order = new Order({
       orderItems,
@@ -94,7 +93,7 @@ const getMyOrders = expressAsyncHandler(async(req, res) => {
     const orders = await Order.find({ user : req.user._id });
     res.json(orders);
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 })
 
@@ -106,7 +105,7 @@ const getOrders = expressAsyncHandler(async(req, res) => {
     const orders = await Order.find({ }).populate('user', 'id name');
     res.json(orders);
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 })
 

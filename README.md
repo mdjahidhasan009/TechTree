@@ -54,7 +54,7 @@
 
 #### Cart
 <p align="center">
-  <img src="screenshots/Techtree-OrderAfterPayment&Delivery.png" 
+  <img src="screenshots/Techtree-Cart.png" 
        height="400" title="Order After Payment & Delivery" />
 </p>
 

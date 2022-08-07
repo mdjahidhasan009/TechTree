@@ -101,7 +101,7 @@ const getUsers = expressAsyncHandler(async (req, res) => {
   res.json(users);
 })
 
-// @desc    Delete an user
+// @desc    Delete a user
 // @route   DELETE api/users/:id
 // @access  Private/Admin
 const deleteUser = expressAsyncHandler(async (req, res) => {
@@ -115,7 +115,7 @@ const deleteUser = expressAsyncHandler(async (req, res) => {
   }
 })
 
-// @desc    Delete an user
+// @desc    Delete a user
 // @route   DELETE api/users/:id
 // @access  Private/Admin
 const getUserById = expressAsyncHandler(async (req, res) => {
@@ -131,7 +131,6 @@ const getUserById = expressAsyncHandler(async (req, res) => {
 // @route   PUT api/users/:id
 // @access  Private/Admin
 const updateUser = expressAsyncHandler(async (req, res) => {
-  console.log(req.params.id);
   const user = await User.findById(req.params.id).select('-password');
   if(user) {
     user.name = req.body.name || user.name;

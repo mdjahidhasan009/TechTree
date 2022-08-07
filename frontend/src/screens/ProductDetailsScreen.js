@@ -32,6 +32,7 @@ const ProductDetailsScreen = ({ history, match }) => {
   const { error: errorProductReview, success: successProductReview } = productReviewCreate;
 
   useEffect(() => {
+    window.scrollTo(0, 0)
     setMainImg({url: product.image, colorCode: null, colorName: null});
   }, [product]);
 
@@ -113,6 +114,7 @@ const ProductDetailsScreen = ({ history, match }) => {
                       </div>
                     </>
                   )}
+
                   {/*Product Image*/}
                   <div className="product__image">
                     <img src={`${process.env.REACT_APP_BACKEND_BASE_URL}${mainImg.url}`} alt="" className="image" id="imgMain"/>
